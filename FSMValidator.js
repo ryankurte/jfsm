@@ -3,6 +3,7 @@
 
 var models = ["mixed", "mealy", "moore"];
 var triggers = ["true", "false"];
+var events = ["input", "output", "internal"];
 
 //Validates a JFSIM input state machine
 exports.validate = function(source, callback) {
@@ -22,7 +23,7 @@ exports.validate = function(source, callback) {
   }
   
   //Check model is correct
-  if(!contains(models, stateMachine.model) == -1) {
+  if(!arrayContains(models, stateMachine.model) == -1) {
     callback(null, "Invalid model, options are: mixed, mealy, moore");
     return;
   }
@@ -61,6 +62,16 @@ exports.validate = function(source, callback) {
       callback(null, "Event name must be specified");
       return;
     }
+    //Check event types exist
+    if(typeof stateMachine.events[i].type === 'undefined') {
+      callback(null, "Event type must be specified");
+      return;
+    }
+    //Check event types are valid
+    if(!arrayContains(events, stateMachine.events[i].type)) {
+      callback(null, "Event name must be specified");
+      return;
+    }
   }
   
   //Parse states
@@ -78,10 +89,17 @@ exports.validate = function(source, callback) {
         return;
       }
     } else {
-      //Check output event exists
+      //If output event is set
       if(typeof stateMachine.states[i].output !== 'undefined') {
+        //Check output event exists
         if(!containsName(stateMachine.events, stateMachine.states[i].output)) {
          callback(null, "State " + stateMachine.states[i].name + " invalid output event " + stateMachine.states[i].output);
+         return;
+        }
+        //Check event is an output
+        var thisEvent = arrayGetNamed(stateMachine.events, stateMachine.states[i].output);
+        if(thisEvent.type != "output") {
+          callback(null, "State " + stateMachine.states[i].name + " event " + stateMachine.states[i].output + "is not an output");
          return;
         }
       }
@@ -127,7 +145,7 @@ exports.validate = function(source, callback) {
     }
     
     //Check trigger exists
-    if(!containsName(stateMachine.events, stateMachine.transitions[i].trigger) && !contains(triggers, stateMachine.transitions[i].trigger)) {
+    if(!containsName(stateMachine.events, stateMachine.transitions[i].trigger) && !arrayContains(triggers, stateMachine.transitions[i].trigger)) {
       callback(null, "Transition " + stateMachine.transitions[i].name + " trigger event " + stateMachine.transitions[i].trigger + " does not exist");
       return;
     }
@@ -143,9 +161,15 @@ exports.validate = function(source, callback) {
     } else {
       //If there is an output event
       if(typeof stateMachine.transitions[i].output !== 'undefined') {
-        //Check it exists
-        if(!containsName(stateMachine.events, stateMachine.states[i].output) == -1) {
+        //Check event exists
+        if(!containsName(stateMachine.events, stateMachine.transitions[i].output)) {
          callback(null, "Transition " + stateMachine.transitions[i].name + " invalid output event " + stateMachine.states[i].output);
+         return;
+        }
+        //Check event is an output
+        var thisEvent = arrayGetNamed(stateMachine.events, stateMachine.transitions[i].output);
+        if(thisEvent.type != "output") {
+          callback(null, "Transition " + stateMachine.transitions[i].name + " event " + stateMachine.transitions[i].output + "is not an output");
          return;
         }
       }
@@ -156,7 +180,8 @@ exports.validate = function(source, callback) {
   callback(stateMachine, null);
 }
 
-function contains(array, value) {
+//Check if an array contains an object with the specified value
+function arrayContains(array, value) {
   if(array.indexOf(value) == -1) {
     return false;
   } else {
@@ -174,4 +199,26 @@ function containsName(array, name) {
     }
   }
   return false;
+}
+
+//Fetch a matching object from an array
+function arrayGet(array, value) {
+  var index = array.indexOf(value);
+  if(index == -1) {
+    return null;
+  } else {
+    return array[index];
+  }
+}
+
+//Fetch a named object from an array
+function arrayGetNamed(array, name) {
+  for(var i=0; i<array.length; i++) {
+    if(typeof array[i].name !== 'undefined') {
+      if(array[i].name == name) {
+        return array[i];
+      }
+    }
+  }
+  return null;
 }

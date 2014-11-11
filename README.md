@@ -5,10 +5,15 @@ Semantics for the representation of single level Finite State Machines (FSMs) us
 JSON was selected due to it's usability as a human readible format, and the ease of conversion into javascript objects, which should allow (near) direct execution of the JFSM state machine intermediate representation.
 
 ##Semantics
-State machines should be defined as demonstrated in ExampleStateMachine.json.
+State machines should be defined as demonstrated in the example files
+
  - name - name of the state machine
  - model - either Mealy, Moore, or Mixed. If the model is not mixed, the state machine will be checked to comply with the specified semantics
  - queueLength - sets the length of the event queues used for communication
- - events - sets the named events to be used as inputs and outputs of the state machine
+ - events - sets the named events to be used as inputs and outputs of the state machine, type must be specified (input or output).
  - states - sets the named states in the state machine, output events may be specified here for use with Moore machines
  - transitions - sets the named transitions between states, along with trigger events. Output events may be specified here for Mealy machines
+
+##Discussions
+ - Do transitions need priority to ensure correct operation?
+ - Should events require an input or output type (ie. strict internal or external use and directions)
