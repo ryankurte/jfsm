@@ -149,6 +149,12 @@ exports.validate = function(source, callback) {
       callback(null, "Transition " + stateMachine.transitions[i].name + " trigger event " + stateMachine.transitions[i].trigger + " does not exist");
       return;
     }
+
+    //Check trigger is an input
+    if(containsName(stateMachine.events, stateMachine.transitions[i].trigger) && (arrayGetNamed(stateMachine.events, stateMachine.transitions[i].trigger).type != "input")) {
+      callback(null, "Transition " + stateMachine.transitions[i].name + " trigger event " + stateMachine.transitions[i].trigger + " is not an input");
+      return;
+    }
     
     //Check state outputs are valid
     if(model == "moore") {
