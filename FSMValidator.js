@@ -1,33 +1,19 @@
 //JSON Finite State Machine Intermediate Representation Validator
 //Checks JFSMIR files for validity
 
-var models = ["mixed", "mealy", "moore"];
-var triggers = ["true", "false"];
-var events = ["input", "output", "internal"];
+var constants = require('./FSMConstants');
 
 //Validates a JFSIM input state machine
 exports.validate = function(source, callback) {
   //Convert to javascript object
   var stateMachine = JSON.parse(source);
   
-  //Check name exists
-  if(typeof stateMachine.name === 'undefined') {
-    callback(null, "State machine name must be specified");
+  //Check state machine headers
+  if(checkHeader(stateMachine, callback) != null) {
     return;
   }
   
-  //Check model exists
-  if(typeof stateMachine.model === 'undefined') {
-    callback(null, "State machine model must be specified");
-    return;
-  }
-  
-  //Check model is correct
-  if(!arrayContains(models, stateMachine.model) == -1) {
-    callback(null, "Invalid model, options are: mixed, mealy, moore");
-    return;
-  }
-  
+  //Save selected model
   var model = stateMachine.model;
   
   //Check initial state exists
@@ -42,36 +28,9 @@ exports.validate = function(source, callback) {
     return;
   }
   
-  //Check queue length exists
-  if(typeof stateMachine.queueLength === 'undefined') {
-    callback(null, "State machine queue length must be specified");
+  //Check event definitions
+  if(checkEvents(stateMachine.events, callback) != null) {
     return;
-  }
-  
-  //Check queue length is a number
-  var queueLength = parseInt(stateMachine.queueLength);
-  if(queueLength == NaN) {
-    callback(null, "State machine queue length invalid");
-    return;
-  }
-  
-  //Parse events
-  for(var i=0; i<stateMachine.events.length; i++) {
-    //Check events are named
-    if(typeof stateMachine.events[i].name === 'undefined') {
-      callback(null, "Event name must be specified");
-      return;
-    }
-    //Check event types exist
-    if(typeof stateMachine.events[i].type === 'undefined') {
-      callback(null, "Event type must be specified");
-      return;
-    }
-    //Check event types are valid
-    if(!arrayContains(events, stateMachine.events[i].type)) {
-      callback(null, "Event name must be specified");
-      return;
-    }
   }
   
   //Parse states
@@ -145,7 +104,7 @@ exports.validate = function(source, callback) {
     }
     
     //Check trigger exists
-    if(!containsName(stateMachine.events, stateMachine.transitions[i].trigger) && !arrayContains(triggers, stateMachine.transitions[i].trigger)) {
+    if(!containsName(stateMachine.events, stateMachine.transitions[i].trigger) && !arrayContains(constants.triggers, stateMachine.transitions[i].trigger)) {
       callback(null, "Transition " + stateMachine.transitions[i].name + " trigger event " + stateMachine.transitions[i].trigger + " does not exist");
       return;
     }
@@ -185,6 +144,69 @@ exports.validate = function(source, callback) {
   //Call callback with no error argument
   callback(stateMachine, null);
 }
+
+/***        Internal Validation Functions        ***/
+
+//Check JSON encoded state machine header information
+function checkHeader(stateMachine, callback) {
+  //Check name exists
+  if(typeof stateMachine.name === 'undefined') {
+    callback(null, "State machine name must be specified");
+    return;
+  }
+  
+  //Check model exists
+  if(typeof stateMachine.model === 'undefined') {
+    callback(null, "State machine model must be specified");
+    return;
+  }
+  
+  //Check model is correct
+  if(!arrayContains(constants.models, stateMachine.model) == -1) {
+    callback(null, "Invalid model, options are: mixed, mealy, moore");
+    return;
+  }
+
+  //Check queue length exists
+  if(typeof stateMachine.queueLength === 'undefined') {
+    callback(null, "State machine queue length must be specified");
+    return;
+  }
+  
+  //Check queue length is a number
+  var queueLength = parseInt(stateMachine.queueLength);
+  if(queueLength == NaN) {
+    callback(null, "State machine queue length invalid");
+    return;
+  }
+
+  return null;
+}
+
+//Check state machine events are correctly defined
+function checkEvents(events, callback) {
+  //Parse events
+  for(var i=0; i<events.length; i++) {
+    //Check events are named
+    if(typeof events[i].name === 'undefined') {
+      callback(null, "Event name must be specified");
+      return;
+    }
+    //Check event types exist
+    if(typeof events[i].type === 'undefined') {
+      callback(null, "Event type must be specified");
+      return;
+    }
+    //Check event types are valid
+    if(!arrayContains(constants.events, events[i].type)) {
+      callback(null, "Event type is invalid");
+      return;
+    }
+  }
+  return null;
+}
+
+/***        Internal Array Functions        ***/
 
 //Check if an array contains an object with the specified value
 function arrayContains(array, value) {
