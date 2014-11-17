@@ -29,7 +29,7 @@ suite('FullTests', function() {
 });
 
 //Header tests
-suite('Header Validation Tests', function() {
+suite('Header Validation', function() {
 	//Prepare passing header
 	setup(function() {
 		stateMachine = {
@@ -74,7 +74,7 @@ suite('Header Validation Tests', function() {
 });
 
 //Event tests
-suite('Event Validation Tests', function() {
+suite('Event Validation', function() {
 	//Prepare passing header
 	setup(function() {
 		events = [
@@ -117,3 +117,115 @@ suite('Event Validation Tests', function() {
 	});
 });
 
+//Initial state tests
+suite('Initial State', function() {
+	//Prepare passing header
+	setup(function() {
+		stateMachine = {initialState: "testInitialState"};
+		states = [{name: "testInitialState"}];
+	});
+	test('Check test initial state is OK', function() {
+		assert.equal(validator.test.checkInitialState(stateMachine, states), null);
+	});
+
+	test('Check initial state exists', function() {
+		delete stateMachine.initialState;
+		assert.throws(
+		  function() {
+		    validator.test.checkInitialState(stateMachine, states);
+		  },
+		  Error
+		);
+	});
+
+	test('Check initial state is correct', function() {
+		stateMachine.initialState = "wrong";
+		assert.throws(
+		  function() {
+		    validator.test.checkInitialState(stateMachine, states);
+		  },
+		  Error
+		);
+	});
+});
+
+//State tests
+suite('State Validation', function() {
+	//Prepare passing header
+	setup(function() {
+		events = [
+		{name: "testEventOne", type: "output"},
+		{name: "testEventTwo", type: "input"},
+		{name: "testEventThree", type: "internal"}];
+	});
+
+	suite('Mealy', function() {
+		setup(function() {
+			state = {name: "testStateOne", type :"input"};
+		});
+
+		test('Check test state is OK', function() {
+			assert.equal(validator.test.checkState(state, events, "mealy"), null);
+		});
+
+		test('Check state name exists', function() {
+			delete state.name;
+			assert.throws(
+			  function() {
+			    validator.test.checkState(state, events, "mealy");
+			  },
+			  Error
+			);
+		});
+
+		test('Check state outputs are not allowed', function() {
+			state.output = events[0].name;
+			assert.throws(
+			  function() {
+			    validator.test.checkState(state, events, "mealy");
+			  },
+			  Error
+			);
+		});
+	});
+
+	suite('Moore', function() {
+		setup(function() {
+			state = {name: "testStateOne", type :"input", output: events[0].name};
+		});
+
+		test('Check test state is OK', function() {
+			assert.equal(validator.test.checkState(state, events, "moore"), null);
+		});
+
+		test('Check state name exists', function() {
+			delete state.name;
+			assert.throws(
+			  function() {
+			    validator.test.checkState(state, events, "moore");
+			  },
+			  Error
+			);
+		});
+
+		test('Check state output event is valid', function() {
+			state.output = "wrong"
+			assert.throws(
+			  function() {
+			    validator.test.checkState(state, events, "moore");
+			  },
+			  Error
+			);
+		});
+
+		test('Check state output event is output type', function() {
+			state.output = events[1].name;
+			assert.throws(
+			  function() {
+			    validator.test.checkState(state, events, "moore");
+			  },
+			  Error
+			);
+		});
+	});
+});

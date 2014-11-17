@@ -115,7 +115,7 @@ function checkInitialState(stateMachine, states) {
     return;
   }
   
-  //Check initial is correct
+  //Check initial state is correct (exists in state machine)
   if(!containsName(states, stateMachine.initialState)) {
     throw new Error( "State machine initial state " + stateMachine.initialState + " does not exist");
     return;
@@ -124,42 +124,46 @@ function checkInitialState(stateMachine, states) {
   return null;
 }
 
-//Check states are valid
+//Check an array of states are valid
 function checkStates(states, events, model) {
-
   //Parse states
   for(var i=0; i<states.length; i++) {
-    //Check states are named
-    if(typeof states[i].name === 'undefined') {
-      throw new Error( "State name must be specified");
-      return;
-    }
-    //Check state outputs are valid
-    if(model == "mealy") {
-      //Not allowed in mealy model
-      if(typeof states[i].output !== 'undefined') {
-        throw new Error( "State outputs not allowed in strict Mealy model");
-        return;
-      }
-    } else {
-      //If output event is set
-      if(typeof states[i].output !== 'undefined') {
-        //Check output event exists
-        if(!containsName(events, states[i].output)) {
-         throw new Error( "State " + states[i].name + " invalid output event " + states[i].output);
-         return;
-        }
-        //Check event is an output
-        var thisEvent = arrayGetNamed(events, states[i].output);
-        if(thisEvent.type != "output") {
-          throw new Error( "State " + states[i].name + " event " + states[i].output + "is not an output");
-         return;
-        }
-      }
-    }
+    checkState(states[i], events, model);
   }
 
   return null;
+}
+
+//Check a state is valid
+function checkState(state, events, model) {
+  //Check state is named
+  if(typeof state.name === 'undefined') {
+    throw new Error( "State name must be specified");
+    return;
+  }
+  //Check state outputs are valid
+  if(model == "mealy") {
+    //Not allowed in mealy model
+    if(typeof state.output !== 'undefined') {
+      throw new Error( "State outputs not allowed in strict Mealy model");
+      return;
+    }
+  } else {
+    //If output event is set
+    if(typeof state.output !== 'undefined') {
+      //Check output event exists
+      if(!containsName(events, state.output)) {
+       throw new Error( "State " + state.name + " invalid output event " + state.output);
+       return;
+      }
+      //Check event is an output
+      var thisEvent = arrayGetNamed(events, state.output);
+      if(thisEvent.type != "output") {
+        throw new Error( "State " + state.name + " event " + state.output + "is not an output");
+       return;
+      }
+    }
+  }
 }
 
 function checkTransitions(transitions, states, events, model) {
@@ -248,6 +252,7 @@ exports.test = {};
 exports.test.checkHeader        = checkHeader;
 exports.test.checkEvents        = checkEvents;
 exports.test.checkInitialState  = checkInitialState;
+exports.test.checkState         = checkState;
 exports.test.checkStates        = checkStates;
 exports.test.checkTransitions   = checkTransitions;
 
