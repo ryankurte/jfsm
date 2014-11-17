@@ -1,5 +1,7 @@
  //FSM Constants
 
+exports.version = '0.0.1';
+
 //FSM Execution Models
 exports.models = ["mixed", "mealy", "moore"];
 

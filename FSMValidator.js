@@ -28,9 +28,11 @@ exports.validate = function(source, callback) {
     }
 
     //Call callback with no error argument
-    callback(stateMachine, null);
+    if(callback) {
+      callback(stateMachine, null);
+    }
 
-    return null;
+    return stateMachine;
 
   } catch (error) {
     console.log(error.message);
@@ -86,7 +88,7 @@ function checkHeader(stateMachine) {
 function checkEvents(events) {
   //Parse events
   for(var i=0; i<events.length; i++) {
-    checkEvent(eventIn);
+    checkEvent(events[i]);
   }
 
   return null;
