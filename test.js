@@ -90,7 +90,7 @@ suite('Event Validation', function() {
 		delete events[0].name;
 		assert.throws(
 		  function() {
-		    validator.test.checkEvents(events);
+		    validator.test.checkEvent(events[0]);
 		  },
 		  Error
 		);
@@ -100,7 +100,7 @@ suite('Event Validation', function() {
 		delete events[0].type;
 		assert.throws(
 		  function() {
-		    validator.test.checkEvents(events);
+		    validator.test.checkEvent(events[0]);
 		  },
 		  Error
 		);
@@ -110,7 +110,7 @@ suite('Event Validation', function() {
 		events[0].type = "wrong";
 		assert.throws(
 		  function() {
-		    validator.test.checkEvents(events);
+		    validator.test.checkEvent(events[0]);
 		  },
 		  Error
 		);
@@ -223,6 +223,143 @@ suite('State Validation', function() {
 			assert.throws(
 			  function() {
 			    validator.test.checkState(state, events, "moore");
+			  },
+			  Error
+			);
+		});
+	});
+});
+
+//Transition tests
+suite('Transition Validation', function() {
+	//Prepare passing header
+	setup(function() {
+		events = [
+			{name: "testEventOne", type: "input"},
+			{name: "testEventTwo", type: "output"},
+			{name: "testEventThree", type: "internal"}];
+		states = [
+			{name: "testStateOne"},
+			{name: "testStateTwo"}];
+		transition = {
+			name: "testTransitionOne", 
+			to: states[0].name,
+			from: states[1].name,
+			trigger: events[0].name};
+	});
+
+	test('Check test transition is OK', function() {
+		assert.equal(validator.test.checkTransition(transition, states, events, "mealy"), null);
+	});
+
+	test('Check transition name exists', function() {
+		delete transition.name;
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition from state exists', function() {
+		delete transition.from;
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition from state is valid', function() {
+		transition.from = "wrong";
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition to state exists', function() {
+		delete transition.to;
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition to state is valid', function() {
+		transition.to = "wrong";
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition trigger exists', function() {
+		delete transition.trigger;
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition trigger is valid', function() {
+		transition.trigger = "wrong";
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check transition trigger is an input', function() {
+		transition.trigger = events[1];
+		assert.throws(
+		  function() {
+		    validator.test.checkTransition(transition, states, events, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	suite('Mealy', function() {
+		test('Check transition output event is valid', function() {
+			transition.output = "wrong"
+			assert.throws(
+			  function() {
+			    validator.test.checkTransition(transition, states, events, "mealy");
+			  },
+			  Error
+			);
+		});
+
+		test('Check transition output event is output type', function() {
+			transition.output = events[0].name;
+			assert.throws(
+			  function() {
+			    validator.test.checkTransition(transition, states, events, "mealy");
+			  },
+			  Error
+			);
+		});
+	});
+
+	suite('Moore', function() {
+		test('Check state outputs are not allowed', function() {
+			transition.output = events[0].name;
+			assert.throws(
+			  function() {
+			    validator.test.checkTransition(transition, states, events, "moore");
 			  },
 			  Error
 			);

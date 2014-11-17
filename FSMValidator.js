@@ -86,29 +86,34 @@ function checkHeader(stateMachine) {
 function checkEvents(events) {
   //Parse events
   for(var i=0; i<events.length; i++) {
-    //Check events are named
-    if(typeof events[i].name === 'undefined') {
-      throw new Error( "Event name must be specified");
-      return;
-    }
-    //TODO: Check event names are not duplicated
-    //Check event types exist
-    if(typeof events[i].type === 'undefined') {
-      throw new Error( "Event type must be specified");
-      return;
-    }
-    //Check event types are valid
-    if(!arrayContains(constants.events, events[i].type)) {
-      throw new Error( "Event type is invalid");
-      return;
-    }
+    checkEvent(eventIn);
   }
 
   return null;
 }
 
-function checkInitialState(stateMachine, states) {
+//Check a single event definition
+function checkEvent(eventIn) {
+  //Check events are named
+  if(typeof eventIn.name === 'undefined') {
+    throw new Error( "Event name must be specified");
+    return;
+  }
+  //TODO: Check event names are not duplicated
+  //Check event types exist
+  if(typeof eventIn.type === 'undefined') {
+    throw new Error( "Event type must be specified");
+    return;
+  }
+  //Check event types are valid
+  if(!arrayContains(constants.events, eventIn.type)) {
+    throw new Error( "Event type is invalid");
+    return;
+  }
+}
 
+//Check initial state is correctly defined
+function checkInitialState(stateMachine, states) {
   //Check initial state exists
   if(typeof stateMachine.initialState === 'undefined') {
     throw new Error( "State machine initial state must be specified");
@@ -166,85 +171,90 @@ function checkState(state, events, model) {
   }
 }
 
+//Check an array of transitions are valid
 function checkTransitions(transitions, states, events, model) {
 
   //Parse transitions
   for(var i=0; i<transitions.length; i++) {
-    //Check transitions are named
-    if(typeof transitions[i].name === 'undefined') {
+    checkTransition(transitions[i], states, events, model);
+  }
+
+  return null;
+}
+
+function checkTransition(transition, states, events, model) {
+  //Check transitions are named
+    if(typeof transition.name === 'undefined') {
       throw new Error( "Transition name must be specified");
       return;
     }
     
     //Check from state is named
-    if(typeof transitions[i].from === 'undefined') {
-      throw new Error( "Transition " + transitions[i].name + " from name must be specified");
+    if(typeof transition.from === 'undefined') {
+      throw new Error( "Transition " + transition.name + " from name must be specified");
       return;
     }
     
     //Check from state exists
-    if(!containsName(states, transitions[i].from)) {
-      throw new Error( "Transition " + transitions[i].name + " from state" + transitions[i].from + " does not exist");
+    if(!containsName(states, transition.from)) {
+      throw new Error( "Transition " + transition.name + " from state " + transition.from + " does not exist");
       return;
     }
     
     //Check to state is named
-    if(typeof transitions[i].to === 'undefined') {
-      throw new Error( "Transition " + transitions[i].name + " to name must be specified");
+    if(typeof transition.to === 'undefined') {
+      throw new Error( "Transition " + transition.name + " to name must be specified");
       return;
     }
     
     //Check to state exists
-    if(!containsName(states, transitions[i].to)) {
-      throw new Error( "Transition " + transitions[i].name + " to state " + transitions[i].to + " does not exist");
+    if(!containsName(states, transition.to)) {
+      throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
       return;
     }
     
     //Check trigger is named
-    if(typeof transitions[i].trigger === 'undefined') {
-      throw new Error( "Transition " + transitions[i].name + " trigger name must be specified");
+    if(typeof transition.trigger === 'undefined') {
+      throw new Error( "Transition " + transition.name + " trigger name must be specified");
       return;
     }
     
     //Check trigger exists
-    if(!containsName(events, transitions[i].trigger) && !arrayContains(constants.triggers, transitions[i].trigger)) {
-      throw new Error( "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " does not exist");
+    if(!containsName(events, transition.trigger) && !arrayContains(constants.triggers, transition.trigger)) {
+      throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " does not exist");
       return;
     }
 
     //Check trigger is an input
-    if(containsName(events, transitions[i].trigger) && (arrayGetNamed(events, transitions[i].trigger).type != "input")) {
-      throw new Error( "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " is not an input");
+    if(containsName(events, transition.trigger) && (arrayGetNamed(events, transition.trigger).type != "input")) {
+      throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " is not an input");
       return;
     }
     
     //Check state outputs are valid
     if(model == "moore") {
       //Output events not allowed in moore model
-      if(typeof transitions[i].output !== 'undefined') {
-        throw new Error( "Transition " + transitions[i].name + " outputs not allowed in strict Moore model");
+      if(typeof transition.output !== 'undefined') {
+        throw new Error( "Transition " + transition.name + " outputs not allowed in strict Moore model");
         return;
       }
     
     } else {
       //If there is an output event
-      if(typeof transitions[i].output !== 'undefined') {
+      if(typeof transition.output !== 'undefined') {
         //Check event exists
-        if(!containsName(events, transitions[i].output)) {
-         throw new Error( "Transition " + transitions[i].name + " invalid output event " + stateMachine.states[i].output);
+        if(!containsName(events, transition.output)) {
+         throw new Error( "Transition " + transition.name + " invalid output event " + stateMachine.states[i].output);
          return;
         }
         //Check event is an output
-        var thisEvent = arrayGetNamed(events, transitions[i].output);
+        var thisEvent = arrayGetNamed(events, transition.output);
         if(thisEvent.type != "output") {
-          throw new Error( "Transition " + transitions[i].name + " event " + transitions[i].output + "is not an output");
+          throw new Error( "Transition " + transition.name + " event " + transition.output + "is not an output");
          return;
         }
       }
     }
-  }
-
-  return null;
 }
 
 /***        Internal function exports for test        ***/
@@ -254,6 +264,7 @@ exports.test.checkEvents        = checkEvents;
 exports.test.checkInitialState  = checkInitialState;
 exports.test.checkState         = checkState;
 exports.test.checkStates        = checkStates;
+exports.test.checkTransition    = checkTransition;
 exports.test.checkTransitions   = checkTransitions;
 
 /***        Internal Array Functions                  ***/
