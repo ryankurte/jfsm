@@ -35,16 +35,21 @@ extern void {{name}}_tick(&{{name}}_storage_t this);
 
 /***		State and Transition Handlers				***/
 
+{{#ifCond model "mealy"}}
 //State machine transition prototypes
 //These should be implemented in the user source code
 {{#each this.transitions}}
 extern void {{../name}}_{{name}}_transition_handler(void);
 {{/each}}
 
+{{else}}
+
 //State machine state prototypes
 //These should be implemented in the user source code
 {{#each this.states}}
 extern void {{../name}}_{{name}}_state_handler(void);
 {{/each}}
+
+{{/ifCond}}
 
 #endif

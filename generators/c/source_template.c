@@ -14,14 +14,7 @@ void {{name}}_tick(&{{name}}_storage_t this, int event) {
 		{{#each this.states}}
 		case {{../name}}_state_{{name}}:
 			switch(event) {
-				{{#ifCond ../model "moore"}}
-				//Moore default tick handler
-				case {{../name}}_event_none:
-					{{../../name}}_{{name}}_state_handler();
-				break;
-				{{else}}
-				{{/ifCond}}
-
+				//TODO: handle always true transitions
 				{{#each ../this.transitions}}
 				{{#ifCond this.from ../name}}
 				case {{this.trigger}}:
@@ -37,6 +30,14 @@ void {{name}}_tick(&{{name}}_storage_t this, int event) {
 				{{else}}
 				{{/ifCond}}
 				{{/each}}
+
+				{{#ifCond ../model "moore"}}
+				//Moore default tick handler
+				default:
+					{{../../name}}_{{name}}_state_handler();
+				break;
+				{{else}}
+				{{/ifCond}}
 			}
 			
 			break;

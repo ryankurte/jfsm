@@ -15,6 +15,7 @@ var stateMachineSource = fs.readFileSync(process.argv[2]);
 var stateMachine = validator.validate(stateMachineSource);
 
 //Generate state machine code
+//TODO: C generation requires explicit mealy or moore state machine
 var stateMachineImplSource = generator.generateCSource(stateMachine);
 var stateMachineImplHeader = generator.generateCHeader(stateMachine);
 
