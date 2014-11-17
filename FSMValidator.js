@@ -8,77 +8,74 @@ exports.validate = function(source, callback) {
   //Convert to javascript object
   var stateMachine = JSON.parse(source);
   
-  //Check state machine headers
-  if(checkHeader(stateMachine, callback) != null) {
-    return;
-  }
-  
-  //Save selected model
-  var model = stateMachine.model;
-  
-  //Check event definitions
-  if(checkEvents(stateMachine.events, callback) != null) {
-    return;
-  }
+  try {
+    //Check state machine headers
+    if(checkHeader(stateMachine) != null) {
+      return;
+    }
+    
+    //Save selected model
+    var model = stateMachine.model;
+    
+    //Check event definitions
+    if(checkEvents(stateMachine.events) != null) {
+      return;
+    }
+    
+    //Check state machine logic (States and Transitions)
+    if(checkStateMachine(stateMachine, model) != null) {
+      return;
+    }
 
-  //Check initial state exists
-  if(typeof stateMachine.initialState === 'undefined') {
-    callback(null, "State machine initial state must be specified");
-    return;
-  }
-  
-  //Check initial is correct
-  if(!containsName(stateMachine.states, stateMachine.initialState)) {
-    callback(null, "State machine initial state " + stateMachine.initialState + " does not exist");
-    return;
-  }
-  
-  //Check states
-  if(checkStates(stateMachine.states, stateMachine.events, model, callback) != null) {
-    return;
-  }
-  
-  //Check transitions
-  if(checkTransitions(stateMachine.transitions, stateMachine.states, stateMachine.events, model, callback) != null) {
-    return;
-  }
+    //Call callback with no error argument
+    callback(stateMachine, null);
 
-  //Call callback with no error argument
-  callback(stateMachine, null);
+    return null;
+
+  } catch (error) {
+    console.log(error.message);
+  }
+  
 }
 
-/***        Internal Validation Functions        ***/
+/***        Internal Validation Functions                 ***/
+
+function checkStateMachine(stateMachine, model) {
+  //Check initial state
+  if(checkInitialState(stateMachine, stateMachine.states) != null) {
+    return;
+  }
+
+  //Check states are valid
+  if(checkStates(stateMachine.states, stateMachine.events, model) != null) {
+    return;
+  }
+  
+  //Check transitions are valid
+  if(checkTransitions(stateMachine.transitions, stateMachine.states, stateMachine.events, model) != null) {
+    return;
+  }
+
+  return null;
+}
 
 //Check JSON encoded state machine header information
-function checkHeader(stateMachine, callback) {
+function checkHeader(stateMachine) {
   //Check name exists
   if(typeof stateMachine.name === 'undefined') {
-    callback(null, "State machine name must be specified");
+    throw new Error( "State machine name must be specified");
     return;
   }
   
   //Check model exists
   if(typeof stateMachine.model === 'undefined') {
-    callback(null, "State machine model must be specified");
+    throw new Error( "State machine model must be specified");
     return;
   }
   
   //Check model is correct
-  if(!arrayContains(constants.models, stateMachine.model) == -1) {
-    callback(null, "Invalid model, options are: mixed, mealy, moore");
-    return;
-  }
-
-  //Check queue length exists
-  if(typeof stateMachine.queueLength === 'undefined') {
-    callback(null, "State machine queue length must be specified");
-    return;
-  }
-  
-  //Check queue length is a number
-  var queueLength = parseInt(stateMachine.queueLength);
-  if(queueLength == NaN) {
-    callback(null, "State machine queue length invalid");
+  if(!arrayContains(constants.models, stateMachine.model)) {
+    throw new Error( "Invalid model, options are: mixed, mealy, moore");
     return;
   }
 
@@ -86,22 +83,23 @@ function checkHeader(stateMachine, callback) {
 }
 
 //Check state machine events are correctly defined
-function checkEvents(events, callback) {
+function checkEvents(events) {
   //Parse events
   for(var i=0; i<events.length; i++) {
     //Check events are named
     if(typeof events[i].name === 'undefined') {
-      callback(null, "Event name must be specified");
+      throw new Error( "Event name must be specified");
       return;
     }
+    //TODO: Check event names are not duplicated
     //Check event types exist
     if(typeof events[i].type === 'undefined') {
-      callback(null, "Event type must be specified");
+      throw new Error( "Event type must be specified");
       return;
     }
     //Check event types are valid
     if(!arrayContains(constants.events, events[i].type)) {
-      callback(null, "Event type is invalid");
+      throw new Error( "Event type is invalid");
       return;
     }
   }
@@ -109,20 +107,38 @@ function checkEvents(events, callback) {
   return null;
 }
 
+function checkInitialState(stateMachine, states) {
+
+  //Check initial state exists
+  if(typeof stateMachine.initialState === 'undefined') {
+    throw new Error( "State machine initial state must be specified");
+    return;
+  }
+  
+  //Check initial is correct
+  if(!containsName(states, stateMachine.initialState)) {
+    throw new Error( "State machine initial state " + stateMachine.initialState + " does not exist");
+    return;
+  }
+
+  return null;
+}
+
 //Check states are valid
-function checkStates(states, events, model, callback) {
+function checkStates(states, events, model) {
+
   //Parse states
   for(var i=0; i<states.length; i++) {
     //Check states are named
     if(typeof states[i].name === 'undefined') {
-      callback(null, "State name must be specified");
+      throw new Error( "State name must be specified");
       return;
     }
     //Check state outputs are valid
     if(model == "mealy") {
       //Not allowed in mealy model
       if(typeof states[i].output !== 'undefined') {
-        callback(null, "State outputs not allowed in strict Mealy model");
+        throw new Error( "State outputs not allowed in strict Mealy model");
         return;
       }
     } else {
@@ -130,13 +146,13 @@ function checkStates(states, events, model, callback) {
       if(typeof states[i].output !== 'undefined') {
         //Check output event exists
         if(!containsName(events, states[i].output)) {
-         callback(null, "State " + states[i].name + " invalid output event " + states[i].output);
+         throw new Error( "State " + states[i].name + " invalid output event " + states[i].output);
          return;
         }
         //Check event is an output
         var thisEvent = arrayGetNamed(events, states[i].output);
         if(thisEvent.type != "output") {
-          callback(null, "State " + states[i].name + " event " + states[i].output + "is not an output");
+          throw new Error( "State " + states[i].name + " event " + states[i].output + "is not an output");
          return;
         }
       }
@@ -146,54 +162,55 @@ function checkStates(states, events, model, callback) {
   return null;
 }
 
-function checkTransitions(transitions, states, events, model, callback) {
+function checkTransitions(transitions, states, events, model) {
+
   //Parse transitions
   for(var i=0; i<transitions.length; i++) {
     //Check transitions are named
     if(typeof transitions[i].name === 'undefined') {
-      callback(null, "Transition name must be specified");
+      throw new Error( "Transition name must be specified");
       return;
     }
     
     //Check from state is named
     if(typeof transitions[i].from === 'undefined') {
-      callback(null, "Transition " + transitions[i].name + " from name must be specified");
+      throw new Error( "Transition " + transitions[i].name + " from name must be specified");
       return;
     }
     
     //Check from state exists
     if(!containsName(states, transitions[i].from)) {
-      callback(null, "Transition " + transitions[i].name + " from state" + transitions[i].from + " does not exist");
+      throw new Error( "Transition " + transitions[i].name + " from state" + transitions[i].from + " does not exist");
       return;
     }
     
     //Check to state is named
     if(typeof transitions[i].to === 'undefined') {
-      callback(null, "Transition " + transitions[i].name + " to name must be specified");
+      throw new Error( "Transition " + transitions[i].name + " to name must be specified");
       return;
     }
     
     //Check to state exists
     if(!containsName(states, transitions[i].to)) {
-      callback(null, "Transition " + transitions[i].name + " to state " + transitions[i].to + " does not exist");
+      throw new Error( "Transition " + transitions[i].name + " to state " + transitions[i].to + " does not exist");
       return;
     }
     
     //Check trigger is named
     if(typeof transitions[i].trigger === 'undefined') {
-      callback(null, "Transition " + transitions[i].name + " trigger name must be specified");
+      throw new Error( "Transition " + transitions[i].name + " trigger name must be specified");
       return;
     }
     
     //Check trigger exists
     if(!containsName(events, transitions[i].trigger) && !arrayContains(constants.triggers, transitions[i].trigger)) {
-      callback(null, "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " does not exist");
+      throw new Error( "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " does not exist");
       return;
     }
 
     //Check trigger is an input
     if(containsName(events, transitions[i].trigger) && (arrayGetNamed(events, transitions[i].trigger).type != "input")) {
-      callback(null, "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " is not an input");
+      throw new Error( "Transition " + transitions[i].name + " trigger event " + transitions[i].trigger + " is not an input");
       return;
     }
     
@@ -201,7 +218,7 @@ function checkTransitions(transitions, states, events, model, callback) {
     if(model == "moore") {
       //Output events not allowed in moore model
       if(typeof transitions[i].output !== 'undefined') {
-        callback(null, "Transition " + transitions[i].name + " outputs not allowed in strict Moore model");
+        throw new Error( "Transition " + transitions[i].name + " outputs not allowed in strict Moore model");
         return;
       }
     
@@ -210,13 +227,13 @@ function checkTransitions(transitions, states, events, model, callback) {
       if(typeof transitions[i].output !== 'undefined') {
         //Check event exists
         if(!containsName(events, transitions[i].output)) {
-         callback(null, "Transition " + transitions[i].name + " invalid output event " + stateMachine.states[i].output);
+         throw new Error( "Transition " + transitions[i].name + " invalid output event " + stateMachine.states[i].output);
          return;
         }
         //Check event is an output
         var thisEvent = arrayGetNamed(events, transitions[i].output);
         if(thisEvent.type != "output") {
-          callback(null, "Transition " + transitions[i].name + " event " + transitions[i].output + "is not an output");
+          throw new Error( "Transition " + transitions[i].name + " event " + transitions[i].output + "is not an output");
          return;
         }
       }
@@ -226,7 +243,15 @@ function checkTransitions(transitions, states, events, model, callback) {
   return null;
 }
 
-/***        Internal Array Functions        ***/
+/***        Internal function exports for test        ***/
+exports.test = {};
+exports.test.checkHeader        = checkHeader;
+exports.test.checkEvents        = checkEvents;
+exports.test.checkInitialState  = checkInitialState;
+exports.test.checkStates        = checkStates;
+exports.test.checkTransitions   = checkTransitions;
+
+/***        Internal Array Functions                  ***/
 
 //Check if an array contains an object with the specified value
 function arrayContains(array, value) {

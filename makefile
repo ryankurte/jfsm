@@ -1,0 +1,3 @@
+
+test:
+	mocha --ui tdd

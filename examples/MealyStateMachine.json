@@ -1,7 +1,6 @@
 {
   "name": "MealyStateMachine",
   "model": "mealy",
-  "queueLength": 1,
   "events": [{"name": "EventOne", "type": "input"}, {"name": "EventTwo", "type": "output"}],
   "states": [{"name": "StateOne"}, {"name": "StateTwo"}],
   "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne", "output": "EventTwo"},

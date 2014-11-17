@@ -1,7 +1,6 @@
 {
   "name": "MooreStateMachine",
   "model": "moore",
-  "queueLength": 1,
   "events": [{"name": "EventOne", "type": "input"}, {"name": "EventTwo", "type": "output"}],
   "states": [{"name": "StateOne"}, {"name": "StateTwo", "output": "EventTwo"}],
   "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne"},
