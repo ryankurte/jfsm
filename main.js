@@ -15,10 +15,12 @@ var stateMachineSource = fs.readFileSync(process.argv[2]);
 var stateMachine = validator.validate(stateMachineSource);
 
 //Generate state machine code
-//TODO: C generation requires explicit mealy or moore state machine
-var stateMachineImplSource = generator.generateCSource(stateMachine);
-var stateMachineImplHeader = generator.generateCHeader(stateMachine);
+//TODO: C generation requires explicit mealy or moore state machine. Fix this.
+//var stateMachineImplSource = generator.generateCSource(stateMachine);
+//var stateMachineImplHeader = generator.generateCHeader(stateMachine);
 
-fs.writeFileSync('a.c', stateMachineImplSource);
-fs.writeFileSync('a.h', stateMachineImplHeader);
+generator.generateSource("c", "./outputs", stateMachine);
+
+//fs.writeFileSync('a.c', stateMachineImplSource);
+//fs.writeFileSync('a.h', stateMachineImplHeader);
 

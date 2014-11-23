@@ -2,6 +2,7 @@
 var handlebars = require('Handlebars');
 var fs = require('fs');
 
+//-----------	Handlebars helper functions		-----------//
 
 handlebars.registerHelper('toLowerCase', function(str) {
   return str.toLowerCase();
@@ -18,26 +19,29 @@ handlebars.registerHelper('ifCond', function(v1, v2, options) {
   return options.inverse(this);
 })
 
-exports.generateCSource = function(stateMachine) {
-	//Load source file
-	var cTemplateFile = __dirname + "/generators/c/source_template.c"
-	var cTemplateSource = '' + fs.readFileSync(cTemplateFile);
-	//Compile template
-	var cTemplate = handlebars.compile(cTemplateSource);
-	//Execute template
-	var result = cTemplate(stateMachine);
+//-----------	External functions				-----------//
 
-	return result;
-}
+//Generate source for a given language type
+exports.generateSource = function(language, outputDir, stateMachine) {
+	//Load language information
+	var languagePath = __dirname + "/generators/" + language + "/";
+	var languageFile = languagePath + "language.json";
+	var languageData = JSON.parse('' + fs.readFileSync(languageFile));
+	//TODO: language data file validator to check language file is correct and templates exist.
 
-exports.generateCHeader = function(stateMachine) {
-	//Load source file
-	var cTemplateFile = __dirname + "/generators/c/header_template.h"
-	var cTemplateSource = '' + fs.readFileSync(cTemplateFile);
-	//Compile template
-	var cTemplate = handlebars.compile(cTemplateSource);
-	//Execute template
-	var result = cTemplate(stateMachine);
+	console.log("Generating output files for language: " + language);
 
-	return result;
+	//For each template file
+	for(var i=0; i<languageData.templates.length; i++) {
+		//Load the template
+		var templateFile = languagePath + languageData.templates[i].name;
+		var templateSource = '' + fs.readFileSync(templateFile);
+		//TODO: check template file loaded
+		//Compile the template
+		var template = handlebars.compile(templateSource);
+		//Execute the template to generate code
+		var result = template(stateMachine);
+		//Save the resultant code
+		fs.writeFileSync(outputDir + "/" + stateMachine.name + languageData.templates[i].extension, result);
+	}
 }
