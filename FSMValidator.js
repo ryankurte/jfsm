@@ -77,11 +77,21 @@ function checkHeader(stateMachine) {
   
   //Check model is correct
   if(!arrayContains(constants.models, stateMachine.model)) {
-    throw new Error( "Invalid model, options are: mixed, mealy, moore");
+    throw new Error( "Invalid model, options are: " + constants.models);
     return;
   }
 
   return null;
+}
+
+//Check state machine data
+function checkData(data) {
+  //TODO: should extended mode be allowed for mealy and moore?
+  if(typeof data !== 'undefined') {
+    for(var i=0; i<data.length; i++) {
+      
+    }
+  }
 }
 
 //Check state machine events are correctly defined
