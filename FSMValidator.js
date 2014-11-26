@@ -4,9 +4,7 @@
 var constants = require('./FSMConstants');
 
 //Validates a JFSIM input state machine
-exports.validate = function(source, callback) {
-  //Convert to javascript object
-  var stateMachine = JSON.parse(source);
+exports.validate = function(stateMachine, callback) {
   
   try {
     //Check state machine headers
@@ -32,12 +30,12 @@ exports.validate = function(source, callback) {
       callback(stateMachine, null);
     }
 
-    return stateMachine;
+    return null;
 
   } catch (error) {
     console.log(error.message);
+    return;
   }
-  
 }
 
 /***        Internal Validation Functions                 ***/
@@ -65,20 +63,44 @@ function checkStateMachine(stateMachine, model) {
 function checkHeader(stateMachine) {
   //Check name exists
   if(typeof stateMachine.name === 'undefined') {
-    throw new Error( "State machine name must be specified");
+    throw new Error("State machine name must be specified");
     return;
   }
   
   //Check model exists
   if(typeof stateMachine.model === 'undefined') {
-    throw new Error( "State machine model must be specified");
+    throw new Error("State machine model must be specified");
     return;
   }
   
   //Check model is correct
   if(!arrayContains(constants.models, stateMachine.model)) {
-    throw new Error( "Invalid model, options are: mixed, mealy, moore");
+    throw new Error("Invalid model, options are: " + constants.models);
     return;
+  }
+
+  return null;
+}
+
+//Check state machine data
+function checkData(data, model) {
+  if(typeof data !== 'undefined') {
+
+    //Data not allowed in strict Moore or Mealy models
+    if((model == "mealy") || (model == "moore")) {
+      throw new Error("Data objects are not allowed in Mealy or Moore models");
+    }
+
+    for(var i=0; i<data.length; i++) {
+      //Check data has a name
+      if(typeof data[i].name === 'undefined') {
+        throw new Error("Data objects must be named");
+      }
+      //Check data has a type
+      if(typeof data[i].type === 'undefined') {
+        throw new Error("Data objects must have an associated type");
+      }
+    }
   }
 
   return null;
@@ -145,14 +167,14 @@ function checkStates(states, events, model) {
 function checkState(state, events, model) {
   //Check state is named
   if(typeof state.name === 'undefined') {
-    throw new Error( "State name must be specified");
+    throw new Error("State name must be specified");
     return;
   }
   //Check state outputs are valid
   if(model == "mealy") {
     //Not allowed in mealy model
     if(typeof state.output !== 'undefined') {
-      throw new Error( "State outputs not allowed in strict Mealy model");
+      throw new Error("State outputs not allowed in strict Mealy model");
       return;
     }
   } else {
@@ -160,15 +182,22 @@ function checkState(state, events, model) {
     if(typeof state.output !== 'undefined') {
       //Check output event exists
       if(!containsName(events, state.output)) {
-       throw new Error( "State " + state.name + " invalid output event " + state.output);
+       throw new Error("State " + state.name + " invalid output event " + state.output);
        return;
       }
       //Check event is an output
       var thisEvent = arrayGetNamed(events, state.output);
       if(thisEvent.type != "output") {
-        throw new Error( "State " + state.name + " event " + state.output + "is not an output");
+        throw new Error("State " + state.name + " event " + state.output + "is not an output");
        return;
       }
+    }
+  }
+
+  //Check state keys are valid
+  for(var name in state) {
+    if(!arrayContains(constants.stateKeys, name)) {
+      throw new Error("Key: " + name + " is invalid in state: " + state.name);
     }
   }
 }
@@ -186,77 +215,84 @@ function checkTransitions(transitions, states, events, model) {
 
 function checkTransition(transition, states, events, model) {
   //Check transitions are named
-    if(typeof transition.name === 'undefined') {
-      throw new Error( "Transition name must be specified");
-      return;
-    }
-    
-    //Check from state is named
-    if(typeof transition.from === 'undefined') {
-      throw new Error( "Transition " + transition.name + " from name must be specified");
-      return;
-    }
-    
-    //Check from state exists
-    if(!containsName(states, transition.from)) {
-      throw new Error( "Transition " + transition.name + " from state " + transition.from + " does not exist");
-      return;
-    }
-    
-    //Check to state is named
-    if(typeof transition.to === 'undefined') {
-      throw new Error( "Transition " + transition.name + " to name must be specified");
-      return;
-    }
-    
-    //Check to state exists
-    if(!containsName(states, transition.to)) {
-      throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
-      return;
-    }
-    
-    //Check trigger is named
-    if(typeof transition.trigger === 'undefined') {
-      throw new Error( "Transition " + transition.name + " trigger name must be specified");
-      return;
-    }
-    
-    //Check trigger exists
-    if(!containsName(events, transition.trigger) && !arrayContains(constants.triggers, transition.trigger)) {
-      throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " does not exist");
-      return;
-    }
+  if(typeof transition.name === 'undefined') {
+    throw new Error( "Transition name must be specified");
+    return;
+  }
+  
+  //Check from state is named
+  if(typeof transition.from === 'undefined') {
+    throw new Error( "Transition " + transition.name + " from name must be specified");
+    return;
+  }
+  
+  //Check from state exists
+  if(!containsName(states, transition.from)) {
+    throw new Error( "Transition " + transition.name + " from state " + transition.from + " does not exist");
+    return;
+  }
+  
+  //Check to state is named
+  if(typeof transition.to === 'undefined') {
+    throw new Error( "Transition " + transition.name + " to name must be specified");
+    return;
+  }
+  
+  //Check to state exists
+  if(!containsName(states, transition.to)) {
+    throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
+    return;
+  }
+  
+  //Check trigger is named
+  if(typeof transition.trigger === 'undefined') {
+    throw new Error( "Transition " + transition.name + " trigger name must be specified");
+    return;
+  }
+  
+  //Check trigger exists
+  if(!containsName(events, transition.trigger) && !arrayContains(constants.triggers, transition.trigger)) {
+    throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " does not exist");
+    return;
+  }
 
-    //Check trigger is an input
-    if(containsName(events, transition.trigger) && (arrayGetNamed(events, transition.trigger).type != "input")) {
-      throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " is not an input");
+  //Check trigger is an input
+  if(containsName(events, transition.trigger) && (arrayGetNamed(events, transition.trigger).type != "input")) {
+    throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " is not an input");
+    return;
+  }
+  
+  //Check state outputs are valid
+  if(model == "moore") {
+    //Output events not allowed in moore model
+    if(typeof transition.output !== 'undefined') {
+      throw new Error( "Transition " + transition.name + " outputs not allowed in strict Moore model");
       return;
     }
-    
-    //Check state outputs are valid
-    if(model == "moore") {
-      //Output events not allowed in moore model
-      if(typeof transition.output !== 'undefined') {
-        throw new Error( "Transition " + transition.name + " outputs not allowed in strict Moore model");
-        return;
+  
+  } else {
+    //If there is an output event
+    if(typeof transition.output !== 'undefined') {
+      //Check event exists
+      if(!containsName(events, transition.output)) {
+       throw new Error( "Transition " + transition.name + " invalid output event " + stateMachine.states[i].output);
+       return;
       }
-    
-    } else {
-      //If there is an output event
-      if(typeof transition.output !== 'undefined') {
-        //Check event exists
-        if(!containsName(events, transition.output)) {
-         throw new Error( "Transition " + transition.name + " invalid output event " + stateMachine.states[i].output);
-         return;
-        }
-        //Check event is an output
-        var thisEvent = arrayGetNamed(events, transition.output);
-        if(thisEvent.type != "output") {
-          throw new Error( "Transition " + transition.name + " event " + transition.output + "is not an output");
-         return;
-        }
+      //Check event is an output
+      var thisEvent = arrayGetNamed(events, transition.output);
+      if(thisEvent.type != "output") {
+        throw new Error( "Transition " + transition.name + " event " + transition.output + "is not an output");
+       return;
       }
     }
+  }
+
+  //Check transition keys are valid
+  for(var name in transition) {
+    if(!arrayContains(constants.transitionKeys, name)) {
+      throw new Error("Key: " + name + " is invalid in transition: " + transition.name);
+    }
+  }
 }
 
 /***        Internal function exports for test        ***/
@@ -268,6 +304,7 @@ exports.test.checkState         = checkState;
 exports.test.checkStates        = checkStates;
 exports.test.checkTransition    = checkTransition;
 exports.test.checkTransitions   = checkTransitions;
+exports.test.checkData          = checkData;
 
 /***        Internal Array Functions                  ***/
 

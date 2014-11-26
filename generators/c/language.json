@@ -3,6 +3,8 @@
 	"description": "Simple C language state machine generator",
 	"templates": [
 		{"name": "header_template.h", "extension": ".h", "description": "C header file template"},
-		{"name": "source_template.c", "extension": ".c", "description": "C source file template"}
+		{"name": "source_template.c", "extension": ".c", "description": "C source file template"},
+		{"name": "stub_template.c", "extension": "-stubs.c", "description": "C stub implementation template"},
+		{"name": "main_template.c", "extension": "-main.c", "description": "C example main template"}
 	]
 }

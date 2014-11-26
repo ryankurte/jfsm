@@ -11,16 +11,17 @@ console.log("Main");
 //Load file
 var stateMachineSource = fs.readFileSync(process.argv[2]);
 
+//Convert to javascript object
+var stateMachine = JSON.parse(source);
+
 //Validate state machine
-var stateMachine = validator.validate(stateMachineSource);
+var valid = validator.validate(stateMachine);
+
+if(valid != null) {
+	return -1;
+}
 
 //Generate state machine code
-//TODO: C generation requires explicit mealy or moore state machine. Fix this.
-//var stateMachineImplSource = generator.generateCSource(stateMachine);
-//var stateMachineImplHeader = generator.generateCHeader(stateMachine);
-
 generator.generateSource("c", "./outputs", stateMachine);
 
-//fs.writeFileSync('a.c', stateMachineImplSource);
-//fs.writeFileSync('a.h', stateMachineImplHeader);
-
+return 0;

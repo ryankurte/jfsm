@@ -9,22 +9,28 @@ suite('FullTests', function() {
 	//Full Mealy implementation
 	suite('Mealy', function() {
 		test('Parse full Mealy state machine', function() {
-			var mealyExampleFile = __dirname + "/examples/MealyStateMachine.json"
+			var mealyExampleFile = __dirname + "/examples/MealyStateMachine.json";
 			var mealySource = fs.readFileSync(mealyExampleFile);
-			validator.validate(mealySource, function(stateMachine, err) {
-				assert.equal(err, null, 'Error parsing Mealy state machine');
-			});
+
+			validator.validate(mealySource);
 		});
 	});
 	//Full Moore implementation
 	suite('Moore', function() {
 		test('Parse full Moore state machine', function() {
-			var mooreExampleFile = __dirname + "/examples/MooreStateMachine.json"
+			var mooreExampleFile = __dirname + "/examples/MooreStateMachine.json";
 			var mooreSource = fs.readFileSync(mooreExampleFile);
 
-			validator.validate(mooreSource, function(stateMachine, err) {
-				assert.equal(err, null, 'Error parsing Moore state machine');
-			});
+			validator.validate(mooreSource);
+		});
+	});
+	//Full UML implementation
+	suite('UML', function() {
+		test('Parse full UML state machine', function() {
+			var UMLExampleFile = __dirname + "/examples/UMLStateMachine.json";
+			var UMLSource = fs.readFileSync(UMLExampleFile);
+
+			validator.validate(UMLSource);
 		});
 	});
 });
@@ -68,6 +74,58 @@ suite('Header Validation', function() {
 		assert.throws(
 		  function() {
 		    validator.test.checkHeader(stateMachine);
+		  },
+		  Error
+		);
+	});
+});
+
+//Data tests
+suite('Data Validation', function() {
+	//Prepare passing header
+	setup(function() {
+		data = [
+		{name: "testDataOne", type :"int"},
+		{name: "testDataTwo", type: "int"},
+		{name: "testDataThree", type: "int"}];
+	});
+	test('Check test data is OK', function() {
+		assert.equal(validator.test.checkData(data, "UML"), null);
+	});
+
+	test('Check data disallowed in Mealy', function() {
+		assert.throws(
+		  function() {
+		    validator.test.checkData(data, "mealy");
+		  },
+		  Error
+		);
+	});
+
+	test('Check data disallowed in Moore', function() {
+		assert.throws(
+		  function() {
+		    validator.test.checkData(data, "moore");
+		  },
+		  Error
+		);
+	});
+
+	test('Check data name exists', function() {
+		delete data[0].name;
+		assert.throws(
+		  function() {
+		    validator.test.checkData(data, "uml");
+		  },
+		  Error
+		);
+	});
+
+	test('Check data type exists', function() {
+		delete data[0].type;
+		assert.throws(
+		  function() {
+		    validator.test.checkData(data, "uml");
 		  },
 		  Error
 		);
@@ -162,7 +220,7 @@ suite('State Validation', function() {
 
 	suite('Mealy', function() {
 		setup(function() {
-			state = {name: "testStateOne", type :"input"};
+			state = {name: "testStateOne"};
 		});
 
 		test('Check test state is OK', function() {
@@ -192,7 +250,7 @@ suite('State Validation', function() {
 
 	suite('Moore', function() {
 		setup(function() {
-			state = {name: "testStateOne", type :"input", output: events[0].name};
+			state = {name: "testStateOne", output: events[0].name};
 		});
 
 		test('Check test state is OK', function() {

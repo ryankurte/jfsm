@@ -29,6 +29,14 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 	var languageData = JSON.parse('' + fs.readFileSync(languageFile));
 	//TODO: language data file validator to check language file is correct and templates exist.
 
+	//Check output directory exists
+	if(!fs.existsSync(outputDir)) {
+		fs.mkdirSync(outputDir);
+	}
+
+	//Load features for state machine generation
+	stateMachine.date = Date();
+
 	console.log("Generating output files for language: " + language);
 
 	//For each template file
