@@ -13,9 +13,9 @@ test:
 	mocha --ui tdd
 
 test-compile: uml mealy moore
-	gcc outputs/UMLStateMachine-main.c outputs/UMLStateMachine-stubs.c outputs/UMLStateMachine.c -o outputs/UMLStateMachine.o
-	gcc outputs/MealyStateMachine-main.c outputs/MealyStateMachine-stubs.c outputs/MealyStateMachine.c -o outputs/MealyStateMachine.o
-	gcc outputs/MooreStateMachine-main.c outputs/MooreStateMachine-stubs.c outputs/MooreStateMachine.c -o outputs/MooreStateMachine.o
+	gcc -lreadline outputs/UMLStateMachine-main.c outputs/UMLStateMachine-stubs.c outputs/UMLStateMachine.c -o outputs/UMLStateMachine.o
+	gcc -lreadline outputs/MealyStateMachine-main.c outputs/MealyStateMachine-stubs.c outputs/MealyStateMachine.c -o outputs/MealyStateMachine.o
+	gcc -lreadline outputs/MooreStateMachine-main.c outputs/MooreStateMachine-stubs.c outputs/MooreStateMachine.c -o outputs/MooreStateMachine.o
 
 setup:
 	sudo npm install -g
