@@ -4,9 +4,7 @@
 var constants = require('./FSMConstants');
 
 //Validates a JFSIM input state machine
-exports.validate = function(source, callback) {
-  //Convert to javascript object
-  var stateMachine = JSON.parse(source);
+exports.validate = function(stateMachine, callback) {
   
   try {
     //Check state machine headers
@@ -32,11 +30,11 @@ exports.validate = function(source, callback) {
       callback(stateMachine, null);
     }
 
-    return stateMachine;
+    return null;
 
   } catch (error) {
     console.log(error.message);
-    return null;
+    return;
   }
 }
 

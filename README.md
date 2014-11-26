@@ -22,9 +22,8 @@ Should prioritize based on usefulness, not necessary to have full coverage.
 
  - Guards - guard conditions enable and disable transitions based on a boolean operations
  - Run to Completion Operation
- - Hierarchical State Machines
+ - Hierarchical State Machines (nested/embedded states, what state depth is required?)
  - Orthogonal Regions (concurrent state machines)
- - Entry and Exit Functions - associated with a state, executed on any entry or exit from the state
  - Internal transitions - transitions that cause execution of an internal action without a state transition
  - Transition Execution Sequence
  - Local Transitions - alternate to external transitions, does not cause exit and reentry from the main target state if the main state is a sub-state of the main source
@@ -34,6 +33,7 @@ Should prioritize based on usefulness, not necessary to have full coverage.
  - add comment support to all objects
  - validate keys for all objects (not just correctness)
  - check only one "true" condition exists in the FSM
+ - allow "true" events in FSMs
 
 
 ##References
