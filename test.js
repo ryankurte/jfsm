@@ -225,7 +225,7 @@ suite('State Validation', function() {
 
 	suite('Mealy', function() {
 		setup(function() {
-			state = {name: "testStateOne", type :"input"};
+			state = {name: "testStateOne"};
 		});
 
 		test('Check test state is OK', function() {
@@ -255,7 +255,7 @@ suite('State Validation', function() {
 
 	suite('Moore', function() {
 		setup(function() {
-			state = {name: "testStateOne", type :"input", output: events[0].name};
+			state = {name: "testStateOne", output: events[0].name};
 		});
 
 		test('Check test state is OK', function() {

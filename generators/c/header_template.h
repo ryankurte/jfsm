@@ -1,5 +1,8 @@
 /**
  * TODO: header
+ *
+ * @file {{name}}.h
+ * @date {{date}}
  */
 
 #ifndef {{name}}_H
@@ -25,6 +28,7 @@ enum {{name}}_event_e {
 //State machine storage type
 typedef struct {{name}}_storage_t {
 	int current_state;
+	int last_state;
 	{{#each this.data}}
 	{{this.type}} {{this.name}};{{#if this.comment}}		//!< {{this.comment}}{{/if}}
 	{{/each}}
@@ -46,20 +50,26 @@ extern void {{name}}_tick({{name}}_storage_t *this);
 /***		State and Transition Handlers				***/
 //These should be implemented in the user source code
 
-//State machine transition prototypes
+//State machine transition function prototypes
 {{#each this.transitions}}
 extern void {{../name}}_{{name}}_transition_handler({{../name}}_storage_t *this);
 {{/each}}
 
-//State machine state prototypes
-
-//TODO: Entry functions
-
-//Tick functions
+//State machine state function prototypes
 {{#each this.states}}
-extern void {{../name}}_{{name}}_state_handler({{../name}}_storage_t *this);
-{{/each}}
 
-//TODO: Exit functions
+{{#if this.onEntry}}
+//State {{name}} entry function
+extern void {{../../name}}_{{name}}_entry_handler({{../../name}}_storage_t *this);
+{{/if}}
+{{#if this.onTick}}
+//State {{name}} tick function
+extern void {{../../name}}_{{name}}_state_handler({{../../name}}_storage_t *this);
+{{/if}}
+{{#if this.onExit}}
+//State {{name}} exit function
+extern void {{../../name}}_{{name}}_exit_handler({{../../name}}_storage_t *this);
+{{/if}}
+{{/each}}	{{! State loop }}
 
 #endif
