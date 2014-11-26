@@ -26,13 +26,13 @@ enum {{name}}_event_e {
 };
 
 //State machine storage type
-typedef struct {{name}}_storage_t {
+typedef struct {{name}}_storage_s {
 	int current_state;
 	int last_state;
 	{{#each this.data}}
 	{{this.type}} {{this.name}};{{#if this.comment}}		//!< {{this.comment}}{{/if}}
 	{{/each}}
-};
+} {{name}}_storage_t;
 
 /***		External interfaces							***/
 //These methods are automatically generated for the given state machine
@@ -45,7 +45,7 @@ extern void {{name}}_init({{name}}_storage_t *this);
 /**
  * State machine tick function
  */
-extern void {{name}}_tick({{name}}_storage_t *this);
+extern void {{name}}_tick({{name}}_storage_t *this, int event);
 
 /***		State and Transition Handlers				***/
 //These should be implemented in the user source code

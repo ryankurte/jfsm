@@ -12,14 +12,14 @@
  */
 void {{name}}_init({{name}}_storage_t *this) {
 	//Set initial state
-	this->currentState = {{initialState}};
+	this->current_state = {{name}}_state_{{initialState}};
 }
 
 /**
  * @brief {{name}} tick function
  */
 void {{name}}_tick({{name}}_storage_t *this, int event) {
-	switch(this->currentState) {
+	switch(this->current_state) {
 	{{#each this.states}}
 	//State {{name}}
 	case {{../name}}_state_{{name}}:
@@ -29,9 +29,9 @@ void {{name}}_tick({{name}}_storage_t *this, int event) {
 			//Handle applicable transitions
 			{{#each ../this.transitions}}
 			{{#ifCond this.from ../name}}
-			case {{this.trigger}}:
-				this->lastState = this->currentState;
-				this->currentState = {{this.to}};
+			case {{../../../name}}_event_{{this.trigger}}:
+				this->last_state = this->current_state;
+				this->current_state = {{../../../name}}_state_{{this.to}};
 				{{#if ../../this.onExit}}
 				//Execute state {this.from} exit function
 				{{../../../../name}}_{{this.from}}_exit_handler(this);

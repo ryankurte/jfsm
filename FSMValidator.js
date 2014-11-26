@@ -36,8 +36,8 @@ exports.validate = function(source, callback) {
 
   } catch (error) {
     console.log(error.message);
+    return null;
   }
-  
 }
 
 /***        Internal Validation Functions                 ***/

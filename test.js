@@ -11,9 +11,8 @@ suite('FullTests', function() {
 		test('Parse full Mealy state machine', function() {
 			var mealyExampleFile = __dirname + "/examples/MealyStateMachine.json";
 			var mealySource = fs.readFileSync(mealyExampleFile);
-			validator.validate(mealySource, function(stateMachine, err) {
-				assert.equal(err, null, 'Error parsing Mealy state machine');
-			});
+
+			validator.validate(mealySource);
 		});
 	});
 	//Full Moore implementation
@@ -22,9 +21,7 @@ suite('FullTests', function() {
 			var mooreExampleFile = __dirname + "/examples/MooreStateMachine.json";
 			var mooreSource = fs.readFileSync(mooreExampleFile);
 
-			validator.validate(mooreSource, function(stateMachine, err) {
-				assert.equal(err, null, 'Error parsing Moore state machine');
-			});
+			validator.validate(mooreSource);
 		});
 	});
 	//Full UML implementation
@@ -33,9 +30,7 @@ suite('FullTests', function() {
 			var UMLExampleFile = __dirname + "/examples/UMLStateMachine.json";
 			var UMLSource = fs.readFileSync(UMLExampleFile);
 
-			validator.validate(UMLSource, function(stateMachine, err) {
-				assert.equal(err, null, 'Error parsing UML state machine');
-			});
+			validator.validate(UMLSource);
 		});
 	});
 });

@@ -4,6 +4,6 @@
   "events": [{"name": "EventOne", "type": "input"}, {"name": "EventTwo", "type": "output"}],
   "states": [{"name": "StateOne"}, {"name": "StateTwo"}],
   "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne", "output": "EventTwo"},
-                  {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "true", "output": "EventTwo"}],
+                  {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "EventOne", "output": "EventTwo"}],
   "initialState": "StateOne"
 }

@@ -1,0 +1,24 @@
+{
+	"name": "json-state-machines",
+	"version": "0.1.0",
+	"description": "Utilities for the representation, validation, and generation of state machines using a JSON intermediate form",
+	"files": [
+		"README.md",
+		"FSMConstants.js",
+		"FSMExecutor.js",
+		"FSMGenerator.js",
+		"FSMValidator.js",
+		"examples"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://bitbucket.org/electronpowered/json-state-machines.git"
+	},
+	"dependencies": {
+		"minimist": "latest",
+		"handlebars": "latest"
+	},
+	"devDependencies": {
+		"mocha": "latest"
+	}
+}

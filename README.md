@@ -31,7 +31,10 @@ Should prioritize based on usefulness, not necessary to have full coverage.
  - Event Deferral - states can have a list of events that will be deferred until entry of a state that does not have the event in it's deferral list
 
 ##Tasks
- [ ] add comment support to all objects
+ - add comment support to all objects
+ - validate keys for all objects (not just correctness)
+ - check only one "true" condition exists in the FSM
+
 
 ##References
 http://en.wikipedia.org/wiki/UML_state_machine

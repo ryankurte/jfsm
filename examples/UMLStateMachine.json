@@ -7,6 +7,6 @@
   "states": [{"name": "StateOne", "onEntry":true, "onTick":true, "onExit":true}, 
              {"name": "StateTwo", "output": "EventTwo", "onEntry":true, "onTick":true, "onExit":true}],
   "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne", "onTransition":true},
-                  {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "true", "onTransition":true}],
+                  {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "EventOne", "onTransition":true}],
   "initialState": "StateOne"
 }
