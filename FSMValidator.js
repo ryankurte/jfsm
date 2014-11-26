@@ -65,19 +65,19 @@ function checkStateMachine(stateMachine, model) {
 function checkHeader(stateMachine) {
   //Check name exists
   if(typeof stateMachine.name === 'undefined') {
-    throw new Error( "State machine name must be specified");
+    throw new Error("State machine name must be specified");
     return;
   }
   
   //Check model exists
   if(typeof stateMachine.model === 'undefined') {
-    throw new Error( "State machine model must be specified");
+    throw new Error("State machine model must be specified");
     return;
   }
   
   //Check model is correct
   if(!arrayContains(constants.models, stateMachine.model)) {
-    throw new Error( "Invalid model, options are: " + constants.models);
+    throw new Error("Invalid model, options are: " + constants.models);
     return;
   }
 
@@ -85,13 +85,27 @@ function checkHeader(stateMachine) {
 }
 
 //Check state machine data
-function checkData(data) {
-  //TODO: should extended mode be allowed for mealy and moore?
+function checkData(data, model) {
   if(typeof data !== 'undefined') {
+
+    //Data not allowed in strict Moore or Mealy models
+    if((model == "mealy") || (model == "moore")) {
+      throw new Error("Data objects are not allowed in Mealy or Moore models");
+    }
+
     for(var i=0; i<data.length; i++) {
-      
+      //Check data has a name
+      if(typeof data[i].name === 'undefined') {
+        throw new Error("Data objects must be named");
+      }
+      //Check data has a type
+      if(typeof data[i].type === 'undefined') {
+        throw new Error("Data objects must have an associated type");
+      }
     }
   }
+
+  return null;
 }
 
 //Check state machine events are correctly defined
@@ -278,6 +292,7 @@ exports.test.checkState         = checkState;
 exports.test.checkStates        = checkStates;
 exports.test.checkTransition    = checkTransition;
 exports.test.checkTransitions   = checkTransitions;
+exports.test.checkData          = checkData;
 
 /***        Internal Array Functions                  ***/
 

@@ -13,6 +13,7 @@ State machines should be defined as demonstrated in the example files
  - events - sets the named events to be used as inputs and outputs of the state machine, type must be specified (input or output).
  - states - sets the named states in the state machine, output events may be specified here for use with Moore machines
  - transitions - sets the named transitions between states, along with trigger events. Output events may be specified here for Mealy machines
+ - comments - comments are allowed on all objects and should be translated through into generated source code
 
 ##UML Compliance
 Update to match UML state machine specification, this will require the following:

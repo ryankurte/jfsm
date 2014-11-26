@@ -3,7 +3,7 @@
 exports.version = '0.0.1';
 
 //FSM Execution Models
-exports.models = ["mixed", "mealy", "moore", "uml"];
+exports.models = ["mealy", "moore", "mixed", "extended", "uml"];
 
 //Additional transition triggers
 exports.triggers = ["true", "false"];

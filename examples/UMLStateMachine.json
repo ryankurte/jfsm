@@ -1,7 +1,8 @@
 {
-  "name": "MooreStateMachine",
+  "name": "UMLStateMachine",
   "model": "moore",
   "events": [{"name": "EventOne", "type": "input"}, {"name": "EventTwo", "type": "output"}],
+  "data": [{"name": "dataOne", "type": "int"}, {"name": "dataTwo", "type": "int"}],
   "states": [{"name": "StateOne"}, {"name": "StateTwo", "output": "EventTwo"}],
   "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne"},
                   {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "true"}],
