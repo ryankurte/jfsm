@@ -34,7 +34,7 @@ exports.validate = function(stateMachine, callback) {
 
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 }
 

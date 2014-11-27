@@ -10,27 +10,30 @@ suite('FullTests', function() {
 	suite('Mealy', function() {
 		test('Parse full Mealy state machine', function() {
 			var mealyExampleFile = __dirname + "/examples/MealyStateMachine.json";
-			var mealySource = fs.readFileSync(mealyExampleFile);
+			var mealySource = JSON.parse(fs.readFileSync(mealyExampleFile));
 
-			validator.validate(mealySource);
+			var res = validator.validate(mealySource);
+			assert.equal(res, null);
 		});
 	});
 	//Full Moore implementation
 	suite('Moore', function() {
 		test('Parse full Moore state machine', function() {
 			var mooreExampleFile = __dirname + "/examples/MooreStateMachine.json";
-			var mooreSource = fs.readFileSync(mooreExampleFile);
+			var mooreSource = JSON.parse(fs.readFileSync(mooreExampleFile));
 
-			validator.validate(mooreSource);
+			var res = validator.validate(mooreSource);
+			assert.equal(res, null);
 		});
 	});
 	//Full UML implementation
 	suite('UML', function() {
 		test('Parse full UML state machine', function() {
 			var UMLExampleFile = __dirname + "/examples/UMLStateMachine.json";
-			var UMLSource = fs.readFileSync(UMLExampleFile);
+			var UMLSource = JSON.parse(fs.readFileSync(UMLExampleFile));
 
-			validator.validate(UMLSource);
+			var res = validator.validate(UMLSource);
+			assert.equal(res, null);
 		});
 	});
 });
