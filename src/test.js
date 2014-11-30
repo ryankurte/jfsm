@@ -302,6 +302,7 @@ suite('Transition Validation', function() {
 			{name: "testEventThree", type: "internal"}];
 		states = [
 			{name: "testStateOne"},
+			{name: "testStateTwo"},
 			{name: "testStateTwo"}];
 		transition = {
 			name: "testTransitionOne", 
@@ -427,4 +428,41 @@ suite('Transition Validation', function() {
 			);
 		});
 	});
+
+	suite('UML', function() {
+		test('Check transitions cannot be duplicated without guards', function() {
+			transitions = [
+				{
+					name: "testTransitionOne", 
+					to: states[0].name,
+					from: states[1].name,
+					trigger: events[0].name
+				},
+				{
+					name: "testTransitionTwo", 
+					to: states[0].name,
+					from: states[2].name,
+					trigger: events[0].name
+				}
+			];
+
+			assert.throws(
+				function() {
+					validator.test.checkTransitions(transitions, states, events, "uml");
+				},
+				Error
+			);
+		});
+	});
 });
+
+
+
+
+
+
+
+
+
+
+

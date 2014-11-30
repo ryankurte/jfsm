@@ -34,6 +34,7 @@ Should prioritize based on usefulness, not necessary to have full coverage.
  - validate keys for all objects (not just correctness)
  - check only one "true" condition exists in the FSM
  - allow "true" events in FSMs
+ - disallow multiple transitions from the same state and event
 
 
 ##References

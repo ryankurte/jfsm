@@ -210,6 +210,24 @@ function checkTransitions(transitions, states, events, model) {
     checkTransition(transitions[i], states, events, model);
   }
 
+  //Check there are no duplicate transitions (same event from the same state without a guard)
+  var transitionMap = [];
+  for(var i=0; i<transitions.length; i++) {
+    if(typeof transitionMap[transitions[i].from] === 'undefined') {
+      transitionMap[transitions[i].from] = [];
+    }
+    //If there is no guard condition
+    //If there is a guard, we can't check for collision (yet)
+    if(typeof transitions[i].guard === 'undefined') {
+      //Check whether the transition already exists
+      if(transitionMap.indexOf(transitions[i].event) > 0) {
+        throw new Error("Duplicate transition events from state: " + transitions[i].from);
+      } else {
+        transitionMap[transitions[i].from].push(transitions[i].event);
+      }
+    }
+  }
+
   return null;
 }
 
