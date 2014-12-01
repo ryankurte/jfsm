@@ -12,7 +12,7 @@ console.log("Main");
 var stateMachineSource = fs.readFileSync(process.argv[2]);
 
 //Convert to javascript object
-var stateMachine = JSON.parse(source);
+var stateMachine = JSON.parse(stateMachineSource);
 
 //Validate state machine
 var valid = validator.validate(stateMachine);

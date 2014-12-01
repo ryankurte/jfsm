@@ -2,7 +2,7 @@
 var assert = require('assert');
 var fs = require('fs');
 
-var validator = require('./FSMValidator');
+var validator = require('./src/FSMValidator');
 
 //Full JSON state machine file tests
 suite('FullTests', function() {

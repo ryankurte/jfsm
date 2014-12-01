@@ -2,6 +2,7 @@
 //Checks JFSMIR files for validity
 
 var constants = require('./FSMConstants');
+var helpers = require('./FSMHelpers');
 
 //Validates a JFSIM input state machine
 exports.validate = function(stateMachine, callback) {
@@ -74,7 +75,7 @@ function checkHeader(stateMachine) {
   }
   
   //Check model is correct
-  if(!arrayContains(constants.models, stateMachine.model)) {
+  if(!helpers.arrayContains(constants.models, stateMachine.model)) {
     throw new Error("Invalid model, options are: " + constants.models);
     return;
   }
@@ -130,7 +131,7 @@ function checkEvent(eventIn) {
     return;
   }
   //Check event types are valid
-  if(!arrayContains(constants.events, eventIn.type)) {
+  if(!helpers.arrayContains(constants.events, eventIn.type)) {
     throw new Error( "Event type is invalid");
     return;
   }
@@ -145,7 +146,7 @@ function checkInitialState(stateMachine, states) {
   }
   
   //Check initial state is correct (exists in state machine)
-  if(!containsName(states, stateMachine.initialState)) {
+  if(!helpers.containsName(states, stateMachine.initialState)) {
     throw new Error( "State machine initial state " + stateMachine.initialState + " does not exist");
     return;
   }
@@ -181,12 +182,12 @@ function checkState(state, events, model) {
     //If output event is set
     if(typeof state.output !== 'undefined') {
       //Check output event exists
-      if(!containsName(events, state.output)) {
+      if(!helpers.containsName(events, state.output)) {
        throw new Error("State " + state.name + " invalid output event " + state.output);
        return;
       }
       //Check event is an output
-      var thisEvent = arrayGetNamed(events, state.output);
+      var thisEvent = helpers.arrayGetNamed(events, state.output);
       if(thisEvent.type != "output") {
         throw new Error("State " + state.name + " event " + state.output + "is not an output");
        return;
@@ -196,7 +197,7 @@ function checkState(state, events, model) {
 
   //Check state keys are valid
   for(var name in state) {
-    if(!arrayContains(constants.stateKeys, name)) {
+    if(!helpers.arrayContains(constants.stateKeys, name)) {
       throw new Error("Key: " + name + " is invalid in state: " + state.name);
     }
   }
@@ -245,7 +246,7 @@ function checkTransition(transition, states, events, model) {
   }
   
   //Check from state exists
-  if(!containsName(states, transition.from)) {
+  if(!helpers.containsName(states, transition.from)) {
     throw new Error( "Transition " + transition.name + " from state " + transition.from + " does not exist");
     return;
   }
@@ -257,7 +258,7 @@ function checkTransition(transition, states, events, model) {
   }
   
   //Check to state exists
-  if(!containsName(states, transition.to)) {
+  if(!helpers.containsName(states, transition.to)) {
     throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
     return;
   }
@@ -269,13 +270,13 @@ function checkTransition(transition, states, events, model) {
   }
   
   //Check trigger exists
-  if(!containsName(events, transition.trigger) && !arrayContains(constants.triggers, transition.trigger)) {
+  if(!helpers.containsName(events, transition.trigger) && !arrayContains(constants.triggers, transition.trigger)) {
     throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " does not exist");
     return;
   }
 
   //Check trigger is an input
-  if(containsName(events, transition.trigger) && (arrayGetNamed(events, transition.trigger).type != "input")) {
+  if(helpers.containsName(events, transition.trigger) && (helpers.arrayGetNamed(events, transition.trigger).type != "input")) {
     throw new Error( "Transition " + transition.name + " trigger event " + transition.trigger + " is not an input");
     return;
   }
@@ -292,12 +293,12 @@ function checkTransition(transition, states, events, model) {
     //If there is an output event
     if(typeof transition.output !== 'undefined') {
       //Check event exists
-      if(!containsName(events, transition.output)) {
+      if(!helpers.containsName(events, transition.output)) {
        throw new Error( "Transition " + transition.name + " invalid output event " + stateMachine.states[i].output);
        return;
       }
       //Check event is an output
-      var thisEvent = arrayGetNamed(events, transition.output);
+      var thisEvent = helpers.arrayGetNamed(events, transition.output);
       if(thisEvent.type != "output") {
         throw new Error( "Transition " + transition.name + " event " + transition.output + "is not an output");
        return;
@@ -307,7 +308,7 @@ function checkTransition(transition, states, events, model) {
 
   //Check transition keys are valid
   for(var name in transition) {
-    if(!arrayContains(constants.transitionKeys, name)) {
+    if(!helpers.arrayContains(constants.transitionKeys, name)) {
       throw new Error("Key: " + name + " is invalid in transition: " + transition.name);
     }
   }
@@ -324,47 +325,4 @@ exports.test.checkTransition    = checkTransition;
 exports.test.checkTransitions   = checkTransitions;
 exports.test.checkData          = checkData;
 
-/***        Internal Array Functions                  ***/
 
-//Check if an array contains an object with the specified value
-function arrayContains(array, value) {
-  if(array.indexOf(value) == -1) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-//Check if an array contains an object with a name field matching that specified
-function containsName(array, name) {
-  for(var i=0; i<array.length; i++) {
-    if(typeof array[i].name !== 'undefined') {
-      if(array[i].name == name) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-//Fetch a matching object from an array
-function arrayGet(array, value) {
-  var index = array.indexOf(value);
-  if(index == -1) {
-    return null;
-  } else {
-    return array[index];
-  }
-}
-
-//Fetch a named object from an array
-function arrayGetNamed(array, name) {
-  for(var i=0; i<array.length; i++) {
-    if(typeof array[i].name !== 'undefined') {
-      if(array[i].name == name) {
-        return array[i];
-      }
-    }
-  }
-  return null;
-}

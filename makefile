@@ -1,11 +1,11 @@
 uml:
-	node main.js examples/UMLStateMachine.json
+	node src/main.js examples/UMLStateMachine.json
 	
 mealy:
-	node main.js examples/MealyStateMachine.json
+	node src/main.js examples/MealyStateMachine.json
 
 moore:
-	node main.js examples/MooreStateMachine.json
+	node src/main.js examples/MooreStateMachine.json
 
 
 #Test requires mocha (`sudo npm install mocha')
