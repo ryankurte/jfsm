@@ -395,6 +395,30 @@ suite('Transition Validation', function() {
 		);
 	});
 
+	test('Check transitions cannot be duplicated with the same exit condition', function() {
+		transitions = [
+			{
+				name: "testTransitionOne", 
+				to: states[0].name,
+				from: states[1].name,
+				trigger: events[0].name
+			},
+			{
+				name: "testTransitionTwo", 
+				to: states[0].name,
+				from: states[2].name,
+				trigger: events[0].name
+			}
+		];
+
+		assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "uml");
+			},
+			Error
+		);
+	});
+
 	suite('Mealy', function() {
 		test('Check transition output event is valid', function() {
 			transition.output = "wrong"
@@ -430,29 +454,6 @@ suite('Transition Validation', function() {
 	});
 
 	suite('UML', function() {
-		test('Check transitions cannot be duplicated without guards', function() {
-			transitions = [
-				{
-					name: "testTransitionOne", 
-					to: states[0].name,
-					from: states[1].name,
-					trigger: events[0].name
-				},
-				{
-					name: "testTransitionTwo", 
-					to: states[0].name,
-					from: states[2].name,
-					trigger: events[0].name
-				}
-			];
-
-			assert.throws(
-				function() {
-					validator.test.checkTransitions(transitions, states, events, "uml");
-				},
-				Error
-			);
-		});
 
 		test('Check guard transitions are only allowed in UML model', function() {
 			transitions = [
