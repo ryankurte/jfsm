@@ -53,8 +53,13 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 		//Execute the template to generate code
 		var result = template(stateMachine);
 		//Save the resultant code
-		fs.writeFileSync(outputDir + "/" + stateMachine.name + languageData.templates[i].extension, result);
+		var outputFile = outputDir + "/" + stateMachine.name + languageData.templates[i].extension;
+		fs.writeFileSync(outputFile, result);
+
+		console.log("Wrote file " + languageData.templates[i].name + " \t-> " +  outputFile)
 	}
+
+	console.log("State machine generation complete");
 }
 
 function getUniqueEvents(events) {

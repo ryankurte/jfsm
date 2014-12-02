@@ -6,8 +6,6 @@ var validator = require('./FSMValidator');
 var executor = require('./FSMExecutor');
 var generator = require('./FSMGenerator');
 
-console.log("Main");
-
 //Load file
 var stateMachineSource = fs.readFileSync(process.argv[2]);
 
@@ -18,6 +16,7 @@ var stateMachine = JSON.parse(stateMachineSource);
 var valid = validator.validate(stateMachine);
 
 if(valid != null) {
+	console.log("Error: invalid JSON FSM syntax");
 	return -1;
 }
 
