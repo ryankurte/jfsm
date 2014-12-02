@@ -1,6 +1,6 @@
 {
   "name": "UMLStateMachine",
-  "model": "moore",
+  "model": "uml",
   "events": [
     {"name": "EventOne", "type": "input"}, 
   	{"name": "EventTwo", "type": "output"},
@@ -16,9 +16,23 @@
     {"name": "StateThree", "output": "EventTwo", "onEntry":true, "onTick":true, "onExit":true}
   ],
   "transitions": [
-    {"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne", "onTransition":true},
-    {"name": "TransitionTwo", "from": "StateTwo", "to": "StateTwo", "trigger": "EventOne", "guard": "dataOne > 5", "onTransition":true},
-    {"name": "TransitionThree", "from": "StateTwo", "to": "StateOne", "trigger": "EventOne", "guard": "dataOne > 5", "onTransition":true}
+    {
+      "name": "TransitionOne", 
+      "from": "StateOne", 
+      "to": "StateTwo", 
+      "trigger": "EventOne", 
+      "onTransition":true
+    },
+    {
+      "name": "TransitionTwo", 
+      "from": "StateTwo", 
+      "trigger": "EventOne",
+      "guard": "this->dataOne > 5", 
+      "to": {"onTrue":"StateOne", "onFalse":"StateTwo"}, 
+      "onTransition":true,
+      "onTrue":true,
+      "onFalse":true
+    }
   ],
   "initialState": "StateOne"
 }

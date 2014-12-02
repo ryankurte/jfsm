@@ -453,6 +453,60 @@ suite('Transition Validation', function() {
 				Error
 			);
 		});
+
+		test('Check guard transitions are only allowed in UML model', function() {
+			transitions = [
+				{
+					name: "testTransitionOne", 
+					guard: "this.something < 5",
+					to: {onTrue: states[0].name, onFalse: states[1].name},
+					from: states[1].name,
+					trigger: events[0].name
+				}
+			];
+
+			assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "mealy");
+			});
+
+			assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "moore");
+			});
+
+			assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "extended");
+			});
+		});
+
+		test('Check guard transition states are valid', function() {
+			transitions = [
+				{
+					name: "testTransitionOne", 
+					guard: "this.something < 5",
+					to: {onTrue: states[0].name, onFalse: states[1].name},
+					from: states[1].name,
+					trigger: events[0].name
+				}
+			];
+
+			transitions[0].to.onTrue = "invalidState";
+
+			assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "uml");
+			});
+
+			transitions[0].to.onTrue = states[0].name;
+			transitions[0].to.onFalse = "invalidState";
+
+			assert.throws(
+			function() {
+				validator.test.checkTransitions(transitions, states, events, "uml");
+			});
+		});
 	});
 });
 

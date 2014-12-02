@@ -253,14 +253,46 @@ function checkTransition(transition, states, events, model) {
   
   //Check to state is named
   if(typeof transition.to === 'undefined') {
-    throw new Error( "Transition " + transition.name + " to name must be specified");
+    throw new Error( "Transition " + transition.name + " to state(s) must be specified");
     return;
   }
   
-  //Check to state exists
-  if(!helpers.containsName(states, transition.to)) {
-    throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
-    return;
+  //Guarded transitions require two true and false states
+  if(typeof transition.guard !== 'undefined') {
+    //TODO: allowed in UML only
+    if(model != "uml") {
+      throw new Error( "Guard conditions only allowed in UML model");
+      return;
+    }
+
+    //Check true state is named
+    if(typeof transition.to.onTrue === 'undefined') {
+      throw new Error( "Transition " + transition.name + " onTrue state must be specified");
+      return;
+    }
+    //Check true state exists
+    if(!helpers.containsName(states, transition.to.onTrue)) {
+      throw new Error( "Transition " + transition.name + " onTrue state " + transition.to.onTrue + " does not exist");
+      return;
+    }
+    //Check false state is named
+    if(typeof transition.to.onFalse === 'undefined') {
+      throw new Error( "Transition " + transition.name + " onFalse state must be specified");
+      return;
+    }
+    //Check false state exists
+    if(!helpers.containsName(states, transition.to.onFalse)) {
+      throw new Error( "Transition " + transition.name + " onFalse state " + transition.to.onFalse + " does not exist");
+      return;
+    }
+
+  //Normal transitions require only a TO state
+  } else {
+    //Check to state exists
+    if(!helpers.containsName(states, transition.to)) {
+      throw new Error( "Transition " + transition.name + " to state " + transition.to + " does not exist");
+      return;
+    }
   }
   
   //Check trigger is named
@@ -309,7 +341,7 @@ function checkTransition(transition, states, events, model) {
   //Check transition keys are valid
   for(var name in transition) {
     if(!helpers.arrayContains(constants.transitionKeys, name)) {
-      throw new Error("Key: " + name + " is invalid in transition: " + transition.name);
+      throw new Error( "Key: " + name + " is invalid in transition: " + transition.name);
     }
   }
 }

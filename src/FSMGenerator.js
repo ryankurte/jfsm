@@ -2,6 +2,8 @@
 var handlebars = require('Handlebars');
 var fs = require('fs');
 
+var helpers = require('./FSMHelpers');
+
 //-----------	Handlebars helper functions		-----------//
 
 handlebars.registerHelper('toLowerCase', function(str) {
@@ -36,6 +38,7 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 
 	//Load features for state machine generation
 	stateMachine.date = Date();
+	stateMachine.eventNames = getUniqueEvents(stateMachine.events);
 
 	console.log("Generating output files for language: " + language);
 
@@ -53,3 +56,18 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 		fs.writeFileSync(outputDir + "/" + stateMachine.name + languageData.templates[i].extension, result);
 	}
 }
+
+function getUniqueEvents(events) {
+	uniqueEvents = [];
+
+	for(var i=0; i<events.length; i++) {
+		if(!helpers.containsName(uniqueEvents, events[i].name)) {
+			uniqueEvents.push(events[i]);
+		}
+	}
+
+	return uniqueEvents;
+}
+
+
+
