@@ -2,7 +2,7 @@
 var handlebars = require('Handlebars');
 var fs = require('fs');
 
-var helpers = require('./FSMHelpers');
+var helpers = require('./fsm-helpers');
 
 //-----------	Handlebars helper functions		-----------//
 

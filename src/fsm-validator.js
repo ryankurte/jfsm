@@ -1,8 +1,8 @@
 //JSON Finite State Machine Intermediate Representation Validator
 //Checks JFSMIR files for validity
 
-var constants = require('./FSMConstants');
-var helpers = require('./FSMHelpers');
+var constants = require('./fsm-constants');
+var helpers = require('./fsm-helpers');
 
 //Validates a JFSIM input state machine
 exports.validate = function(stateMachine, callback) {

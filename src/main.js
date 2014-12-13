@@ -2,9 +2,9 @@
 var fs = require('fs');
 var minimist = require('minimist');
 
-var validator = require('./FSMValidator');
-var executor = require('./FSMExecutor');
-var generator = require('./FSMGenerator');
+var validator = require('./fsm-validator');
+var executor = require('./fsm-executor');
+var generator = require('./fsm-generator');
 
 //Load file
 var stateMachineSource = fs.readFileSync(process.argv[2]);

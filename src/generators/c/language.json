@@ -1,6 +1,7 @@
 {
 	"language": "c",
 	"description": "Simple C language state machine generator",
+	"modes": ["mealy", "moore", "mixed", "extended", "uml"],
 	"templates": [
 		{"name": "header_template.h", "extension": ".h", "description": "C header file template"},
 		{"name": "source_template.c", "extension": ".c", "description": "C source file template"},

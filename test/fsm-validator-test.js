@@ -2,14 +2,14 @@
 var assert = require('assert');
 var fs = require('fs');
 
-var validator = require('./src/FSMValidator');
+var validator = require('../src/fsm-validator');
 
 //Full JSON state machine file tests
 suite('FullTests', function() {
 	//Full Mealy implementation
 	suite('Mealy', function() {
 		test('Parse full Mealy state machine', function() {
-			var mealyExampleFile = __dirname + "/examples/MealyStateMachine.json";
+			var mealyExampleFile = __dirname + "/../examples/MealyStateMachine.json";
 			var mealySource = JSON.parse(fs.readFileSync(mealyExampleFile));
 
 			var res = validator.validate(mealySource);
@@ -19,7 +19,7 @@ suite('FullTests', function() {
 	//Full Moore implementation
 	suite('Moore', function() {
 		test('Parse full Moore state machine', function() {
-			var mooreExampleFile = __dirname + "/examples/MooreStateMachine.json";
+			var mooreExampleFile = __dirname + "/../examples/MooreStateMachine.json";
 			var mooreSource = JSON.parse(fs.readFileSync(mooreExampleFile));
 
 			var res = validator.validate(mooreSource);
@@ -29,7 +29,7 @@ suite('FullTests', function() {
 	//Full UML implementation
 	suite('UML', function() {
 		test('Parse full UML state machine', function() {
-			var UMLExampleFile = __dirname + "/examples/UMLStateMachine.json";
+			var UMLExampleFile = __dirname + "/../examples/UMLStateMachine.json";
 			var UMLSource = JSON.parse(fs.readFileSync(UMLExampleFile));
 
 			var res = validator.validate(UMLSource);
