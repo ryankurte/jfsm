@@ -12,17 +12,17 @@
 #include <readline/readline.h>
  #include <readline/history.h>
 
-#include "{{name}}.h"
+#include "{{@root.name}}.h"
 
 int main(int argc, char** argv) {
 	int running = 1;
-	{{name}}_storage_t fsm;
+	{{@root.name}}_storage_t fsm;
 
 	//Set up prompt string
 	char shell_prompt[] = "> ";
 
 	//Initialise FSM
-	{{name}}_init(&fsm);
+	{{@root.name}}_init(&fsm);
 
 	while(running) {
 		char *input = NULL;
@@ -36,13 +36,13 @@ int main(int argc, char** argv) {
 		//Parse input
 		if(strncmp(input, "tick", 4) == 0) {
 			//Tick command
-			{{name}}_tick(&fsm, {{name}}_event_none);
+			{{@root.name}}_tick(&fsm, {{name}}_event_none);
 
 		{{! Event inputs}}
 		{{#each this.events}}
 		} else if(strncmp(input, "{{this.name}}", strlen("{{this.name}}")) == 0) {
 			{{#ifCond this.type "input"}}
-			{{../../name}}_tick(&fsm, {{../../name}}_event_{{../name}});
+			{{@root.name}}_tick(&fsm, {{@root.name}}_event_{{../name}});
 			{{else}}
 			printf("Error: {{../name}} is not an input event\r\n");
 			{{/ifCond}}

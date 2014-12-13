@@ -6,13 +6,13 @@
  * @date {{date}}
  */
 
-#define DEBUG_{{toUpperCase name}}
+#define DEBUG_{{toUpperCase @root.name}}
 
-#ifdef DEBUG_{{toUpperCase name}}
+#ifdef DEBUG_{{toUpperCase @root.name}}
 #include "stdio.h"
-#define DEBUG_PRINT_{{toUpperCase name}}(...) printf(__VA_ARGS__)
+#define DEBUG_PRINT_{{toUpperCase @root.name}}(...) printf(__VA_ARGS__)
 #else
-#define DEBUG_PRINT_{{toUpperCase name}}(...)
+#define DEBUG_PRINT_{{toUpperCase @root.name}}(...)
 #endif
 
 #include "{{name}}.h"
@@ -21,8 +21,8 @@
 
 //State machine transition function stubs
 {{#each this.transitions}}
-extern void {{../name}}_{{name}}_transition_handler({{../name}}_storage_t *this) {
-	DEBUG_PRINT_{{toUpperCase ../name}}("FSM: {{../name}} State: {{name}} transition function called\r\n");
+extern void {{@root.name}}_{{name}}_transition_handler({{@root.name}}_storage_t *this) {
+	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} transition function called\r\n");
 
 	return;
 }
@@ -33,24 +33,24 @@ extern void {{../name}}_{{name}}_transition_handler({{../name}}_storage_t *this)
 
 {{#if this.onEntry}}
 //State {{name}} entry function
-extern void {{../../name}}_{{name}}_entry_handler({{../../name}}_storage_t *this){
-	DEBUG_PRINT_{{toUpperCase ../../name}}("FSM: {{../../name}} State: {{name}} entry function called\r\n");
+extern void {{@root.name}}_{{name}}_entry_handler({{@root.name}}_storage_t *this){
+	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} entry function called\r\n");
 
 	return;
 }
 {{/if}}
 {{#if this.onTick}}
 //State {{name}} tick function
-extern void {{../../name}}_{{name}}_state_handler({{../../name}}_storage_t *this){
-	DEBUG_PRINT_{{toUpperCase ../../name}}("FSM: {{../name}} State: {{name}} tick function called\r\n");
+extern void {{@root.name}}_{{name}}_state_handler({{@root.name}}_storage_t *this){
+	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} tick function called\r\n");
 
 	return;
 }
 {{/if}}
 {{#if this.onExit}}
 //State {{name}} exit function
-extern void {{../../name}}_{{name}}_exit_handler({{../../name}}_storage_t *this){
-	DEBUG_PRINT_{{toUpperCase ../../name}}("FSM: {{../name}} State: {{name}} exit function called\r\n");
+extern void {{@root.name}}_{{name}}_exit_handler({{@root.name}}_storage_t *this){
+	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} exit function called\r\n");
 
 	return;
 }
