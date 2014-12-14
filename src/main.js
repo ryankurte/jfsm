@@ -22,5 +22,6 @@ if(valid != null) {
 
 //Generate state machine code
 generator.generateSource("c", "./outputs", stateMachine);
+generator.generateSource("csharp", "./outputs", stateMachine);
 
 return 0;

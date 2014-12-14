@@ -1,0 +1,10 @@
+{
+	"language": "c#",
+	"description": "Simple C# language state machine generator",
+	"modes": ["mealy", "moore", "mixed", "extended", "uml"],
+	"templates": [
+		{"name": "source_template.cs", "extension": ".cs", "description": "C# source file template"},
+		{"name": "stub_template.cs", "extension": "-stubs.cs", "description": "C# stub implementation template"},
+		{"name": "main_template.cs", "extension": "-main.cs", "description": "C# example main template"}
+	]
+}

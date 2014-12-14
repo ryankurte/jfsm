@@ -7,19 +7,23 @@ var helpers = require('./fsm-helpers');
 //-----------	Handlebars helper functions		-----------//
 
 handlebars.registerHelper('toLowerCase', function(str) {
-  return str.toLowerCase();
+    return str.toLowerCase();
 });
 
 handlebars.registerHelper('toUpperCase', function(str) {
-  return str.toUpperCase();
+    return str.toUpperCase();
 });
 
 handlebars.registerHelper('ifCond', function(v1, v2, options) {
-  if(v1 === v2) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
+    if(v1 === v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
 })
+
+handlebars.registerHelper('camelCase', function(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+});
 
 //-----------	External functions				-----------//
 
