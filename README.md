@@ -45,11 +45,14 @@ Should prioritize based on usefulness, not necessary to have full coverage.
  - ~~disallow multiple transitions from the same state and event~~
  - check for orphaned states
  - build support for wiring together of state machine modules
+ - switch to passing data object rather than state machine object
+ - implement event outputs
 
 ##Layout
 
  - src/ contains javascript source files
  - src/generators contains language generator files
+ - test contains test files
  - examples contains example JSON state machines
 
 ##References

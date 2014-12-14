@@ -17,7 +17,7 @@ namespace {{camelCase @root.name}}
 
 		//State machine transition function stubs
 		{{#each this.transitions}}
-		protected override void {{camelCase name}}TransitionHandler() {
+		protected override void {{camelCase name}}TransitionHandler(Data data) {
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} transition function called");
 		}
 		{{/each}}
@@ -27,19 +27,19 @@ namespace {{camelCase @root.name}}
 
 		{{#if this.onEntry}}
 		//State {{name}} entry function
-		protected override void {{camelCase name}}EntryHandler(){
+		protected override void {{camelCase name}}EntryHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} entry function called");
 		}
 		{{/if}}
 		{{#if this.onTick}}
 		//State {{name}} tick function
-		protected override void {{camelCase name}}StateHandler(){
+		protected override void {{camelCase name}}StateHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} tick function called");
 		}
 		{{/if}}
 		{{#if this.onExit}}
 		//State {{name}} exit function
-		protected override void {{camelCase name}}ExitHandler(){
+		protected override void {{camelCase name}}ExitHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} exit function called");
 		}
 		{{/if}}

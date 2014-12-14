@@ -25,13 +25,17 @@ enum {{@root.name}}_event_e {
 	{{/each}}
 };
 
+typedef struct {{@root.name}}_data_s {
+	{{#each this.data}}
+	{{this.type}} {{this.name}};{{#if this.comment}}		//!< {{this.comment}}{{/if}}
+	{{/each}}
+} {{@root.name}}_data_t;
+
 //State machine storage type
 typedef struct {{@root.name}}_storage_s {
 	int current_state;
 	int last_state;
-	{{#each this.data}}
-	{{this.type}} {{this.name}};{{#if this.comment}}		//!< {{this.comment}}{{/if}}
-	{{/each}}
+	{{@root.name}}_data_t data;
 } {{@root.name}}_storage_t;
 
 /***		External interfaces							***/
@@ -52,7 +56,7 @@ extern void {{@root.name}}_tick({{name}}_storage_t *this, int event);
 
 //State machine transition function prototypes
 {{#each this.transitions}}
-extern void {{@root.name}}_{{name}}_transition_handler({{../name}}_storage_t *this);
+extern void {{@root.name}}_{{name}}_transition_handler({{@root.name}}_data_t *data);
 {{/each}}
 
 //State machine state function prototypes
@@ -60,15 +64,15 @@ extern void {{@root.name}}_{{name}}_transition_handler({{../name}}_storage_t *th
 
 {{#if this.onEntry}}
 //State {{name}} entry function
-extern void {{@root.name}}_{{name}}_entry_handler({{../../name}}_storage_t *this);
+extern void {{@root.name}}_{{name}}_entry_handler({{@root.name}}_data_t *data);
 {{/if}}
 {{#if this.onTick}}
 //State {{name}} tick function
-extern void {{@root.name}}_{{name}}_state_handler({{../../name}}_storage_t *this);
+extern void {{@root.name}}_{{name}}_state_handler({{@root.name}}_data_t *data);
 {{/if}}
 {{#if this.onExit}}
 //State {{name}} exit function
-extern void {{@root.name}}_{{name}}_exit_handler({{../../name}}_storage_t *this);
+extern void {{@root.name}}_{{name}}_exit_handler({{@root.name}}_data_t *data);
 {{/if}}
 {{/each}}	{{! State loop }}
 

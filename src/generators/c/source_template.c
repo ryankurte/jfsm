@@ -19,6 +19,9 @@ void {{@root.name}}_init({{name}}_storage_t *this) {
  * @brief {{name}} tick function
  */
 void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
+
+	{{@root.name}}_data_t *data = &this->data;
+
 	switch(this->current_state) {
 	{{#each this.states}}
 	//State {{@root.name}}
@@ -45,15 +48,15 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
 					//Call handlers
 					{{#if ../../../../this.onExit}}
 					//Execute state {this.from} exit function
-					{{@root.name}}_{{this.from}}_exit_handler(this);
+					{{@root.name}}_{{this.from}}_exit_handler(&this->data);
 					{{/if}}
 					{{#if this.onTransition}}
 					//Execute transition {{name}} handler function
-					{{@root.name}}_{{name}}_transition_handler(this);
+					{{@root.name}}_{{name}}_transition_handler(&this->data);
 					{{/if}}
 					{{#if ../../../../this.onEntry}}
 					//Execute state {{this.to}} entry function
-					{{@root.name}}_{{this.to.onTrue}}_entry_handler(this);
+					{{@root.name}}_{{this.to.onTrue}}_entry_handler(&this->data);
 					{{/if}}
 					{{/if}}
 				} else {
@@ -65,15 +68,15 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
 					//Call handlers
 					{{#if ../../../../this.onExit}}
 					//Execute state {this.from} exit function
-					{{@root.name}}_{{this.from}}_exit_handler(this);
+					{{@root.name}}_{{this.from}}_exit_handler(&this->data);
 					{{/if}}
 					{{#if this.onTransition}}
 					//Execute transition {{name}} handler function
-					{{@root.name}}_{{name}}_transition_handler(this);
+					{{@root.name}}_{{name}}_transition_handler(&this->data);
 					{{/if}}
 					{{#if ../../../../this.onEntry}}
 					//Execute state {{this.to}} entry function
-					{{@root.name}}_{{this.to.onFalse}}_entry_handler(this);
+					{{@root.name}}_{{this.to.onFalse}}_entry_handler(&this->data);
 					{{/if}}
 					{{/if}}
 				}
@@ -85,15 +88,15 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
 				//Call handlers
 				{{#if ../../../this.onExit}}
 				//Execute state {this.from} exit function
-				{{@root.name}}_{{this.from}}_exit_handler(this);
+				{{@root.name}}_{{this.from}}_exit_handler(&this->data);
 				{{/if}}
 				{{#if this.onTransition}}
 				//Execute transition {{name}} handler function
-				{{@root.name}}_{{name}}_transition_handler(this);
+				{{@root.name}}_{{name}}_transition_handler(&this->data);
 				{{/if}}
 				{{#if ../../../this.onEntry}}
 				//Execute state {{this.to}} entry function
-				{{@root.name}}_{{this.to}}_entry_handler(this);
+				{{@root.name}}_{{this.to}}_entry_handler(&this->data);
 				{{/if}}
 				{{/if}}
 
@@ -106,7 +109,7 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
 			default:
 				{{#if this.onTick}}
 				//Execute state tick function
-				{{@root.name}}_{{name}}_state_handler(this);
+				{{@root.name}}_{{name}}_state_handler(&this->data);
 				{{/if}}
 			break;
 		}

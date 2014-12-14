@@ -16,6 +16,7 @@ test-compile: uml mealy moore
 	gcc -lreadline outputs/UMLStateMachine-main.c outputs/UMLStateMachine-stubs.c outputs/UMLStateMachine.c -o outputs/UMLStateMachine.o
 	gcc -lreadline outputs/MealyStateMachine-main.c outputs/MealyStateMachine-stubs.c outputs/MealyStateMachine.c -o outputs/MealyStateMachine.o
 	gcc -lreadline outputs/MooreStateMachine-main.c outputs/MooreStateMachine-stubs.c outputs/MooreStateMachine.c -o outputs/MooreStateMachine.o
+	mcs outputs/*.cs
 
 setup:
 	sudo npm install -g
