@@ -2,6 +2,7 @@
 	"language": "c#",
 	"description": "Simple C# language state machine generator",
 	"modes": ["mealy", "moore", "mixed", "extended", "uml"],
+	"accessor": "data.",
 	"templates": [
 		{"name": "source_template.cs", "extension": ".cs", "description": "C# source file template"},
 		{"name": "stub_template.cs", "extension": "-stubs.cs", "description": "C# stub implementation template"},

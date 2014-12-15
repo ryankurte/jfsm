@@ -45,6 +45,17 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 	stateMachine.eventNames = getUniqueEvents(stateMachine.events);
 	stateMachine.language = language;
 
+	//Prepend language specific data accessors to guard conditions
+	stateMachine.transitions.forEach(function(transition, index) {
+		if(typeof transition.guard !== 'undefined') {
+			console.log(transition.guard);
+			stateMachine.data.forEach(function(data, index) {
+				var newName = languageData.accessor + data.name;
+				transition.guard = transition.guard.replace(data.name, newName);
+			});
+		}
+	});
+
 	console.log("Generating output files for language: " + language);
 
 	//For each template file

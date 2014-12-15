@@ -27,7 +27,7 @@
       "name": "TransitionTwo", 
       "from": "StateTwo", 
       "trigger": "EventOne",
-      "guard": "data.dataOne > 5", 
+      "guard": "dataOne > 5", 
       "to": {"onTrue":"StateOne", "onFalse":"StateTwo"}, 
       "onTransition":true,
       "onTrue":true,
