@@ -43,6 +43,7 @@ exports.generateSource = function(language, outputDir, stateMachine) {
 	//Load features for state machine generation
 	stateMachine.date = Date();
 	stateMachine.eventNames = getUniqueEvents(stateMachine.events);
+	stateMachine.language = language;
 
 	console.log("Generating output files for language: " + language);
 
