@@ -73,7 +73,7 @@ namespace {{camelCase @root.name}}
 								this.currentState = States.{{camelCase ../this.to.onTrue}};
 
 								//Call handlers
-								{{#if ../../../../this.onExit}}
+								{{#if ../../../../this.events.onExit}}
 								//Execute state {this.from} exit function
 								{{camelCase this.from}}ExitHandler(data);
 								{{/if}}
@@ -81,7 +81,7 @@ namespace {{camelCase @root.name}}
 								//Execute transition {{name}} handler function
 								{{camelCase name}}TransitionHandler(data);
 								{{/if}}
-								{{#if ../../../../this.onEntry}}
+								{{#if ../../../../this.events.onEntry}}
 								//Execute state {{this.to}} entry function
 								{{camelCase this.to.onTrue}}EntryHandler(data);
 								{{/if}}
@@ -93,7 +93,7 @@ namespace {{camelCase @root.name}}
 								this.currentState = States.{{../this.to.onFalse}};
 
 								//Call handlers
-								{{#if ../../../../this.onExit}}
+								{{#if ../../../../this.events.onExit}}
 								//Execute state {this.from} exit function
 								{{camelCase this.from}}ExitHandler(data);
 								{{/if}}
@@ -101,7 +101,7 @@ namespace {{camelCase @root.name}}
 								//Execute transition {{name}} handler function
 								{{camelCase name}}TransitionHandler(data);
 								{{/if}}
-								{{#if ../../../../this.onEntry}}
+								{{#if ../../../../this.events.onEntry}}
 								//Execute state {{this.to}} entry function
 								{{camelCase this.to.onFalse}}EntryHandler(data);
 								{{/if}}
@@ -113,7 +113,7 @@ namespace {{camelCase @root.name}}
 							this.lastState = this.currentState;
 							this.currentState = States.{{this.to}};
 							//Call handlers
-							{{#if ../../../this.onExit}}
+							{{#if ../../../this.events.onExit}}
 							//Execute state {this.from} exit function
 							{{camelCase this.from}}ExitHandler(data);
 							{{/if}}
@@ -121,7 +121,7 @@ namespace {{camelCase @root.name}}
 							//Execute transition {{name}} handler function
 							{{camelCase name}}TransitionHandler(data);
 							{{/if}}
-							{{#if ../../../this.onEntry}}
+							{{#if ../../../this.events.onEntry}}
 							//Execute state {{this.to}} entry function
 							{{camelCase this.to}}EntryHandler(data);
 							{{/if}}
@@ -134,7 +134,7 @@ namespace {{camelCase @root.name}}
 
 						//Default tick handler
 						default:
-							{{#if this.onTick}}
+							{{#if this.events.onTick}}
 							//Execute state tick function
 							{{camelCase name}}StateHandler(data);
 							{{/if}}
@@ -156,15 +156,15 @@ namespace {{camelCase @root.name}}
 		//State machine state function stubs
 		{{#each this.states}}
 
-		{{#if this.onEntry}}
+		{{#if this.events.onEntry}}
 		//State {{name}} entry function
 		protected abstract void {{camelCase name}}EntryHandler(Data data);
 		{{/if}}
-		{{#if this.onTick}}
+		{{#if this.events.onTick}}
 		//State {{name}} tick function
 		protected abstract void {{camelCase name}}StateHandler(Data data);
 		{{/if}}
-		{{#if this.onExit}}
+		{{#if this.events.onExit}}
 		//State {{name}} exit function
 		protected abstract void {{camelCase name}}ExitHandler(Data data);
 		{{/if}}

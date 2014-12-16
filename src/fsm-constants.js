@@ -12,7 +12,7 @@ exports.triggers = ["true", "false"];
 exports.events = ["input", "output", "internal"];
 
 //Allowed keys in state objects
-exports.stateKeys = ["name", "model", "output", "onEntry", "onTick", "onExit", "comment"];
+exports.stateKeys = ["name", "model", "output", "events", "onEntry", "onTick", "onExit", "comment"];
 
 //Allowed keys in transition objects
 exports.transitionKeys = ["name", "from", "to", "trigger", "output", "onTransition", "guard", "onTrue", "onFalse", "comment"];

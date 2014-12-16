@@ -4,11 +4,13 @@
 	"description": "Utilities for the representation, validation, and generation of state machines using a JSON intermediate form",
 	"files": [
 		"README.md",
-		"src/FSMConstants.js",
-		"src/FSMExecutor.js",
-		"src/FSMGenerator.js",
-		"src/FSMValidator.js",
-		"src/examples"
+		"examples",
+		"src/fsm-constants.js",
+		"src/fsm-executor.js",
+		"src/fsm-generator.js",
+		"src/fsm-validator.js",
+		"src/generators",
+		"app"
 	],
 	"repository": {
 		"type": "git",
@@ -16,7 +18,10 @@
 	},
 	"dependencies": {
 		"minimist": "latest",
-		"handlebars": "latest"
+		"handlebars": "latest",
+		"lodash": "latest",
+		"backbone": "latest",
+		"jquery": "latest",
 	},
 	"devDependencies": {
 		"mocha": "latest"

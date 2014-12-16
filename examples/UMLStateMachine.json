@@ -11,9 +11,9 @@
     {"name": "dataTwo", "type": "int"}
   ],
   "states": [
-    {"name": "StateOne", "onEntry":true, "onTick":true, "onExit":true}, 
-    {"name": "StateTwo", "onEntry":true, "onTick":true, "onExit":true},
-    {"name": "StateThree", "output": "EventTwo", "onEntry":true, "onTick":true, "onExit":true}
+    {"name": "StateOne", "events": {"onEntry":true, "onTick":true, "onExit":true}}, 
+    {"name": "StateTwo", "events": {"onEntry":true, "onTick":true, "onExit":true}},
+    {"name": "StateThree", "output": "EventTwo", "events": {"onEntry":true, "onTick":true, "onExit":true}}
   ],
   "transitions": [
     {

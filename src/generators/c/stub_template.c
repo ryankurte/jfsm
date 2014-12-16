@@ -31,7 +31,7 @@ extern void {{@root.name}}_{{name}}_transition_handler({{@root.name}}_data_t *da
 //State machine state function stubs
 {{#each this.states}}
 
-{{#if this.onEntry}}
+{{#if this.events.onEntry}}
 //State {{name}} entry function
 extern void {{@root.name}}_{{name}}_entry_handler({{@root.name}}_data_t *data){
 	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} entry function called\r\n");
@@ -39,7 +39,7 @@ extern void {{@root.name}}_{{name}}_entry_handler({{@root.name}}_data_t *data){
 	return;
 }
 {{/if}}
-{{#if this.onTick}}
+{{#if this.events.onTick}}
 //State {{name}} tick function
 extern void {{@root.name}}_{{name}}_state_handler({{@root.name}}_data_t *data){
 	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} tick function called\r\n");
@@ -47,7 +47,7 @@ extern void {{@root.name}}_{{name}}_state_handler({{@root.name}}_data_t *data){
 	return;
 }
 {{/if}}
-{{#if this.onExit}}
+{{#if this.events.onExit}}
 //State {{name}} exit function
 extern void {{@root.name}}_{{name}}_exit_handler({{@root.name}}_data_t *data){
 	DEBUG_PRINT_{{toUpperCase @root.name}}("FSM: {{@root.name}} State: {{name}} exit function called\r\n");

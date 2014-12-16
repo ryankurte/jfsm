@@ -25,19 +25,19 @@ namespace {{camelCase @root.name}}
 		//State machine state function stubs
 		{{#each this.states}}
 
-		{{#if this.onEntry}}
+		{{#if this.events.onEntry}}
 		//State {{name}} entry function
 		protected override void {{camelCase name}}EntryHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} entry function called");
 		}
 		{{/if}}
-		{{#if this.onTick}}
+		{{#if this.events.onTick}}
 		//State {{name}} tick function
 		protected override void {{camelCase name}}StateHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} tick function called");
 		}
 		{{/if}}
-		{{#if this.onExit}}
+		{{#if this.events.onExit}}
 		//State {{name}} exit function
 		protected override void {{camelCase name}}ExitHandler(Data data){
 			Console.WriteLine("FSM: {{@root.name}} State: {{name}} exit function called");
