@@ -6,8 +6,22 @@ var validator = require('./fsm-validator');
 var executor = require('./fsm-executor');
 var generator = require('./fsm-generator');
 
+var args = minimist(process.argv.slice(2));
+
+//Parse command line arguments
+
+if(typeof args.file === 'undefined') {
+	console.log("File name must be specified with --file=fileName");
+	return 0;
+}
+
+if(typeof args.lang === 'undefined') {
+	console.log("Output language must be specified with --lang=languageName");
+	return 0;
+}
+
 //Load file
-var stateMachineSource = fs.readFileSync(process.argv[2]);
+var stateMachineSource = fs.readFileSync(args.file);
 
 //Convert to javascript object
 var stateMachine = JSON.parse(stateMachineSource);
@@ -21,7 +35,6 @@ if(valid != null) {
 }
 
 //Generate state machine code
-generator.generateSource("c", "./outputs", stateMachine);
-generator.generateSource("csharp", "./outputs", stateMachine);
+generator.generateSource(args.lang, "./outputs", stateMachine);
 
 return 0;
