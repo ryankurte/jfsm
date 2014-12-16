@@ -1,68 +1,83 @@
-var graph = new joint.dia.Graph;
+var gui = require('nw.gui');
+var fs = require('fs');
+var helpers = require('../src/fsm-helpers');
 
+var graph = new joint.dia.Graph;
+var uml = joint.shapes.uml;
+var win = gui.Window.get();
+
+//Set up window
+win.isKioskMode = false;
+win.setResizable(true);
+
+//Create paper object
 var paper = new joint.dia.Paper({
     el: $('#paper'),
-    width: 800,
-    height: 600,
-    gridSize: 1,
+    width: $(document).width(),
+    height: $(document).height(),
+    gridSize: 10,
     model: graph
 });
 
 
-var uml = joint.shapes.uml;
+var file = fs.readFileSync("./UMLStateMachine.json");
 
-var states = {
+var sm = JSON.parse(file);
 
-    s0: new uml.StartState({
-        position: { x:20  , y: 20 },
-        size: { width: 30, height: 30 },
-    }),
+var states = [];
 
-    s1: new uml.State({
-        position: { x:100  , y: 100 },
-        size: { width: 200, height: 100 },
-        name: "state 1",
-        events: ["entry / init()","exit / destroy()"]
-    }),
+//Render states
+states.push(new uml.StartState({
+    position: { x:20  , y: 20 },
+    size: { width: 30, height: 30 },
+}));
 
-    s2: new uml.State({
-        position: { x:400  , y: 200 },
-        size: { width: 300, height: 300 },
-        name: "state 2",
-        events: ["entry / create()","exit / kill()","A / foo()","B / bar()"]
-    }),
+sm.states.forEach(function(state, index) {
+    var newState = new uml.State({
+        position: state.position,
+        size: state.size,
+        name: state.name,
+        events: ["test"]
+    });
 
-    s3: new uml.State({
-        position: { x:130  , y: 400 },
-        size: { width: 160, height: 60 },
-        name: "state 3",
-        events: ["entry / create()","exit / kill()"]
-    }),
+    //Attach id for later traversal
+    state.id = newState.id;
 
-    s4: new uml.State({
-        position: { x:530  , y: 400 },
-        size: { width: 160, height: 50 },
-        name: "sub state 4",
-        events: ["entry / create()"]
-    }),
-
-    se: new uml.EndState({
-        position: { x:750  , y: 550 },
-        size: { width: 30, height: 30 },
-    })
-
-};
+    states.push(newState);
+});
 
 graph.addCells(states);
 
-states.s2.embed(states.s4);
+var transitions = [];
 
-var transitons = [
-    new uml.Transition({ source: { id: states.s0.id }, target: { id: states.s1.id }}),
-    new uml.Transition({ source: { id: states.s1.id }, target: { id: states.s2.id }}),
-    new uml.Transition({ source: { id: states.s1.id }, target: { id: states.s3.id }}),
-    new uml.Transition({ source: { id: states.s3.id }, target: { id: states.s4.id }}),
-    new uml.Transition({ source: { id: states.s2.id }, target: { id: states.se.id }})
-];
+transitions.push(new uml.Transition({
+    source: {id: states[0].id}, 
+    target: {id: helpers.arrayGetNamed(sm.states, sm.initialState).id}
+}));
 
-graph.addCells(transitons);
+sm.transitions.forEach(function(transition, index) {
+    console.log("Transition: " + transition.from + "->" + transition.to);
+    console.log(transition);
+
+    var from = helpers.arrayGetNamed(sm.states, transition.from);
+
+    if(typeof transition.guard === 'undefined') {
+        //Single destination
+        var to = helpers.arrayGetNamed(sm.states, transition.to);
+        var newTransition = new uml.Transition({source: {id: from.id}, target: {id: to.id }})
+
+        //Attach id for later traversal
+        transition.id = newTransition.id;
+
+        transitions.push(newTransition);
+
+    } else {
+        //Multiple destinations, uh.
+
+    }
+
+
+    
+});
+
+graph.addCells(transitions);
