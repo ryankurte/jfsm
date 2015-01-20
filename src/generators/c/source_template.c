@@ -18,8 +18,12 @@ void {{@root.name}}_init({{name}}_storage_t *this) {
 /**
  * @brief {{name}} tick function
  */
-void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
+void {{@root.name}}_tick({{@root.name}}_storage_t *this) {
 
+	//TODO: fetch input events from queue
+	int event = {{root.name}}_event_none;
+
+	//Fetch data for use in user functions
 	{{@root.name}}_data_t *data = &this->data;
 
 	switch(this->current_state) {
@@ -117,6 +121,19 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this, int event) {
 	break;
 	{{/each}}
 	}
+}
+
+//Pass an event to the state machine
+void {{@root.name}}_put_event({{name}}_storage_t *this, int event, void* data)
+{
+	//TODO: place valid input event into input queue
+	//TODO: handle invalid event inputs
+}
+
+//Fetch an event from the state machine
+void {{@root.name}}_get_event({{name}}_storage_t *this, int *event, void* data)
+{	
+	//TODO: fetch event from output queue
 }
 
 
