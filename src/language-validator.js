@@ -1,5 +1,0 @@
-#Language configuration file validator
-
-
-
-

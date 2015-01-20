@@ -5,11 +5,13 @@
 	"files": [
 		"README.md",
 		"examples",
-		"src/fsm-constants.js",
-		"src/fsm-executor.js",
-		"src/fsm-generator.js",
-		"src/fsm-validator.js",
-		"src/generators",
+		"lib/jfsm.js",
+		"lib/fsm-constants.js",
+		"lib/fsm-helpers.js",
+		"lib/fsm-executor.js",
+		"lib/fsm-generator.js",
+		"lib/fsm-validator.js",
+		"lib/generators",
 		"app"
 	],
 	"repository": {
@@ -26,7 +28,8 @@
 	"devDependencies": {
 		"mocha": "latest"
 	},
+	"main": "/lib/jfsm.js",
 	"bin": {
-		"jfsm": "src/main.js"
+		"jfsm": "lib/jfsm.js"
 	}
 }
