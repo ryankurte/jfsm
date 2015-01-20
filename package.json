@@ -21,9 +21,12 @@
 		"handlebars": "latest",
 		"lodash": "latest",
 		"backbone": "latest",
-		"jquery": "latest",
+		"jquery": "latest"
 	},
 	"devDependencies": {
 		"mocha": "latest"
+	},
+	"bin": {
+		"jfsm": "src/main.js"
 	}
 }
