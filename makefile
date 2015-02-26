@@ -5,9 +5,9 @@ test: FORCE
 
 # C requires libreadline and gcc (or clang)
 language-c:
-	node src/main.js --file=examples/UMLStateMachine.json --lang=c
-	node src/main.js --file=examples/MealyStateMachine.json --lang=c
-	node src/main.js --file=examples/MooreStateMachine.json --lang=c
+	node lib/jfsm.js --file=examples/UMLStateMachine.json --lang=c
+	node lib/jfsm.js --file=examples/MealyStateMachine.json --lang=c
+	node lib/jfsm.js --file=examples/MooreStateMachine.json --lang=c
 
 	gcc -lreadline outputs/UMLStateMachine-main.c outputs/UMLStateMachine-stubs.c outputs/UMLStateMachine.c -o outputs/UMLStateMachine.o
 	gcc -lreadline outputs/MealyStateMachine-main.c outputs/MealyStateMachine-stubs.c outputs/MealyStateMachine.c -o outputs/MealyStateMachine.o
@@ -15,9 +15,9 @@ language-c:
 	
 # C# requires a working C# compiler
 language-csharp:
-	node src/main.js --file=examples/UMLStateMachine.json --lang=csharp
-	node src/main.js --file=examples/MealyStateMachine.json --lang=csharp
-	node src/main.js --file=examples/MooreStateMachine.json --lang=csharp
+	node lib/jfsm.js --file=examples/UMLStateMachine.json --lang=csharp
+	node lib/jfsm.js --file=examples/MealyStateMachine.json --lang=csharp
+	node lib/jfsm.js --file=examples/MooreStateMachine.json --lang=csharp
 
 	mcs outputs/*.cs
 

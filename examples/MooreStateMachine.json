@@ -1,9 +1,38 @@
 {
   "name": "MooreStateMachine",
   "model": "moore",
-  "events": [{"name": "EventOne", "type": "input"}, {"name": "EventTwo", "type": "output"}],
-  "states": [{"name": "StateOne"}, {"name": "StateTwo", "output": "EventTwo"}],
-  "transitions": [{"name": "TransitionOne", "from": "StateOne", "to": "StateTwo", "trigger": "EventOne"},
-                  {"name": "TransitionTwo", "from": "StateTwo", "to": "StateOne", "trigger": "EventOne"}],
+  "events": [
+    {
+      "name": "EventOne",
+      "type": "input"
+    },
+    {
+      "name": "EventTwo",
+      "type": "output"
+    }
+  ],
+  "states": [
+    {
+      "name": "StateOne"
+    },
+    {
+      "name": "StateTwo",
+      "output": "EventTwo"
+    }
+  ],
+  "transitions": [
+    {
+      "name": "TransitionOne",
+      "from": "StateOne",
+      "to": "StateTwo",
+      "trigger": "EventOne"
+    },
+    {
+      "name": "TransitionTwo",
+      "from": "StateTwo",
+      "to": "StateOne",
+      "trigger": "EventOne"
+    }
+  ],
   "initialState": "StateOne"
 }
