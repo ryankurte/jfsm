@@ -3,13 +3,13 @@
   "model": "uml",
   "events": [
     {"name": "EventOne", "type": "input", "data": [
-      "name": "EventOneData", "type": "int"
+      {"name": "EventOneData", "type": "int"}
     ]}, 
   	{"name": "EventTwo", "type": "output", "data": [
-      "name": "EventTwoData", "type": "char"
+      {"name": "EventTwoData", "type": "char"}
     ]},
     {"name": "EventThree", "type": "output", "data": [
-      "name": "EventThreeData", "type": "void*"
+      {"name": "EventThreeData", "type": "void*"}
     ]}
   ],
   "data": [
