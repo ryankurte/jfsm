@@ -7,6 +7,8 @@
 
 #include "{{@root.name}}.h"
 
+#include <stdlib.h>
+
 /**
  * @brief {{@root.name}} initialization function
  */
@@ -20,9 +22,6 @@ void {{@root.name}}_init({{name}}_storage_t *this) {
  */
 void {{@root.name}}_tick({{@root.name}}_storage_t *this) {
 
-	//TODO: fetch input events from queue
-	int event = {{root.name}}_event_none;
-
 	//Fetch data for use in user functions
 	{{@root.name}}_data_t *data = &this->data;
 
@@ -31,7 +30,7 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this) {
 	//State {{@root.name}}
 	case {{@root.name}}_state_{{name}}:
 		//For each event
-		switch(event) {
+		switch(this->event_in) {
 			{{! TODO: handle always true transitions }}
 			//Handle applicable transitions
 			{{#each ../this.transitions}}
@@ -121,6 +120,9 @@ void {{@root.name}}_tick({{@root.name}}_storage_t *this) {
 	break;
 	{{/each}}
 	}
+
+	this->event_in = {{@root.name}}_event_none;
+	this->data_in = NULL;
 }
 
 //Pass an event to the state machine
@@ -128,12 +130,16 @@ void {{@root.name}}_put_event({{name}}_storage_t *this, int event, void* data)
 {
 	//TODO: place valid input event into input queue
 	//TODO: handle invalid event inputs
+	this->event_in = event;
+	this->data_in = data;
 }
 
 //Fetch an event from the state machine
-void {{@root.name}}_get_event({{name}}_storage_t *this, int *event, void* data)
+void {{@root.name}}_get_event({{name}}_storage_t *this, int *event, void** data)
 {	
 	//TODO: fetch event from output queue
+	*event = this->event_out;
+	*data = this->data_out;
 }
 
 

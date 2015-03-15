@@ -19,7 +19,8 @@ enum {{@root.name}}_state_e {
 
 //Event enumerations
 enum {{@root.name}}_event_e {
-	{{root.name}}_event_none,
+	{{@root.name}}_event_none = 0,
+	{{@root.name}}_event_None = 0,
 	{{#each this.events}}
 	{{@root.name}}_event_{{name}},{{#if this.comment}}		//!< {{this.comment}}{{/if}}
 	{{/each}}
@@ -37,6 +38,10 @@ typedef struct {{@root.name}}_storage_s {
 	int current_state;
 	int last_state;
 	{{@root.name}}_data_t data;
+	int event_in;
+	int event_out;
+	void* data_in;
+	void* data_out;
 } {{@root.name}}_storage_t;
 
 /***		External interfaces							***/
@@ -49,10 +54,10 @@ extern void {{@root.name}}_init({{name}}_storage_t *this);
 extern void {{@root.name}}_tick({{name}}_storage_t *this);
 
 //Pass an event to the state machine
-extern void {{@root.name}}_send_event({{name}}_storage_t *this, int event, void* data);
+extern void {{@root.name}}_put_event({{name}}_storage_t *this, int event, void* data);
 
 //Fetch an event from the state machine
-extern void {{@root.name}}_get_event({{name}}_storage_t *this, int *event, void* data);
+extern void {{@root.name}}_get_event({{name}}_storage_t *this, int *event, void** data);
 
 /***		State and Transition Handler Stubs			***/
 //These should be implemented in the user source code
