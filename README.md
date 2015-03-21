@@ -8,7 +8,7 @@ JSON was selected due to it's usability as a human readable format, and the ease
 
 Originally this was intended to integrate all the features required to be compliant with UML StateCharts, however this added massive (unnecessary) complexity without a demonstrated need. So, Minimum Viable Project it is.
 This was also to provide functionality for wiring of state machines for elegant system level design, however for now it seems that simply generating state machines offers enough utility, and generating state machines with standard interfaces will allow other projects to worry about wiring and models of execution.
-It seems better to start by trying to solve a small problem well and moving from there [1](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall.27s_law)
+It seems better to start by trying to solve a small problem well and moving from there [[1](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall.27s_law)]
 
 ##Project State
 ###Specification
@@ -34,7 +34,9 @@ Generator uses handlebars style templates with a JSON language specification fil
 
  - Installation requires node.js and npm.
  - Install dependencies with `npm install`
- - Examples are located in the /examples directory
+ - Example State Machines are located in the /examples directory
+ - To run the jfsm utility locally, use `node lib/jfsm.js`
+ - To install the jfsm utility globally, use `npm install -g ./`, then call `jfsm` to execute
  - For example commands, check out the makefile
 
 ##Semantics
