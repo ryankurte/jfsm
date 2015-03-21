@@ -8,7 +8,7 @@
  
 using System;
 
-namespace {{camelCase @root.name}}
+namespace StateMachines
 {
 	public class {{camelCase @root.name}}Impl : {{camelCase @root.name}}
 	{

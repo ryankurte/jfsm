@@ -8,7 +8,7 @@
 
 using System;
 
-namespace {{@root.name}}
+namespace StateMachines
 {
 	class {{camelCase @root.name}}Main
 	{

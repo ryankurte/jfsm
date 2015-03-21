@@ -5,7 +5,7 @@
  * @date {{date}}
  */
 
-namespace {{camelCase @root.name}}
+namespace StateMachines
 {
 	public abstract class {{camelCase @root.name}}
 	{

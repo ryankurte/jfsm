@@ -19,15 +19,17 @@ language-csharp:
 	node lib/jfsm.js --file=examples/MealyStateMachine.json --lang=csharp
 	node lib/jfsm.js --file=examples/MooreStateMachine.json --lang=csharp
 
-	mcs outputs/*.cs
+	mcs outputs/UMLStateMachine.cs outputs/UMLStateMachine-main.cs outputs/UMLStateMachine-stubs.cs -out:outputs/UMLStateMachine.exe
+	mcs outputs/MealyStateMachine.cs outputs/MealyStateMachine-main.cs outputs/MealyStateMachine-stubs.cs -out:outputs/MealyStateMachine.exe
+	mcs outputs/MooreStateMachine.cs outputs/MooreStateMachine-main.cs outputs/MooreStateMachine-stubs.cs -out:outputs/MooreStateMachine.exe
 
 test-compile: language-c language-csharp
 
 setup:
-	sudo npm install -g
+	npm install -g
 
 install:
-	@echo install not yet supported
+	npm install -g ./
 
 clean:
 	rm -r f outputs
