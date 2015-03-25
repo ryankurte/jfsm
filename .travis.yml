@@ -6,10 +6,7 @@ before_install:
 install:
     - sudo apt-get install build-essential
     - sudo apt-get install nodejs
-
-    - git config --global user.email "travis@electronpowered.org"
-    - git config --global user.name "Travis CI"
-    - git checkout https://github.com/ryankurte/jfsm.git
+    - sudo apt-get install mono-complete
 
 script:
     - make test
