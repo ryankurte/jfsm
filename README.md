@@ -64,6 +64,9 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
  - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the outputs folder.
  - For example commands, check out the makefile.
 
+##Usage
+`jfsm --file [statemachine.json] --output [output directory]`
+
 ##Semantics
 
 State machines should be defined as demonstrated in the example files
