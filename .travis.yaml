@@ -1,0 +1,22 @@
+language: c
+
+before_install:
+    - sudo apt-get update
+
+install:
+    - sudo apt-get install build-essential
+    - sudo apt-get install nodejs
+
+    - git config --global user.email "travis@electronpowered.org"
+    - git config --global user.name "Travis CI"
+    - git checkout https://github.com/ryankurte/jfsm.git
+
+script:
+    - make test
+    - make test-compile
+    - make install
+
+notifications:
+    email: false
+
+
