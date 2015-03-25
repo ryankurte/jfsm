@@ -27,23 +27,33 @@ This was also to provide functionality for wiring of state machines for elegant 
 It seems better to start by trying to solve a small problem well and moving from there [[1](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall.27s_law)]
 
 ##Project State
+
+[![Build Status](https://travis-ci.org/ryankurte/jfsm.svg)](https://travis-ci.org/ryankurte/jfsm)
+
 ###Specification
 Only by example (and in this README), see ./examples for example JSON files.
+
 This will be developed as we attempt to actually use the generator and discover issues / annoyances with the spec.
 
 ###Validation
 See lib/fsm-validator.js
+
 Fairly complete. Validates Mealy, Moore and Extended state machines.
+
 Needs cleanup for simplification.
 
 ###Generation
 See lib/fsm-generator.js
+
 Fairly complete. Generator functionality mostly implemented, generator templates need some work.
+
 Generator uses handlebars style templates with a JSON language specification file, see ./lib/generators/c for an up to date example.
 
 ###Visualization
 See app/
+
 Barely started. Visualization app could be build using node-webkit with joint.js rendering.
+
 examples/UMLStateMachine.json currently contains some keys for rendering, however this (IMO) makes the state machine less clear, so alternate methods are to be investigated.
 
 ##Current Generators
@@ -97,6 +107,7 @@ An example of these methods can be viewed in outputs/UMLStateMachine.h after run
  - add tests to Travis-ci.org
  - add to npm to allow simple installation of the utilities
  - improve documentation / help
+ - refactor monolithic (awful) validation module into separate components
 
 ##Layout
 
