@@ -7,6 +7,8 @@ install:
     - sudo apt-get install build-essential
     - sudo apt-get install nodejs
     - sudo apt-get install mono-complete
+    - npm install
+    - npm install --dev
 
 script:
     - make test
