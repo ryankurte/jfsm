@@ -9,8 +9,8 @@ before_install:
 install:
     - sudo apt-get install build-essential > /dev/null
     - sudo apt-get install mono-devel > /dev/null
-    - npm install
-    - npm install --dev
+    - npm install > /dev/null
+    - npm install --dev > /dev/null
 
 script:
     - make test
