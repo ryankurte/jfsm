@@ -1,14 +1,16 @@
-language: c
+language: node_js
+
+node_js:
+    - node
 
 before_install:
     - sudo apt-get update
 
 install:
     - sudo apt-get install build-essential > /dev/null
-    - sudo apt-get install nodejs > /dev/null
     - sudo apt-get install mono-devel > /dev/null
     - npm install
-    - npm install -g --dev
+    - npm install --dev
 
 script:
     - make test
