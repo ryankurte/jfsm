@@ -7,11 +7,11 @@ before_install:
     - sudo apt-get update
 
 install:
-    - sudo apt-get install build-essential > /dev/null
-    - sudo apt-get install mono-devel mono-mcs > /dev/null
-    - sudo apt-get install libreadline-dev > /dev/null
-    - npm install > /dev/null
-    - npm install --dev > /dev/null
+    - sudo apt-get install build-essential
+    - sudo apt-get install mono-devel mono-mcs
+    - sudo apt-get install libreadline-dev
+    - npm install
+    - npm install --dev
 
 script:
     - make test
