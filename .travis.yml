@@ -8,7 +8,7 @@ before_install:
 
 install:
     - sudo apt-get install build-essential > /dev/null
-    - sudo apt-get install mono-devel > /dev/null
+    - sudo apt-get install mono-devel mono-mcs > /dev/null
     - sudo apt-get install libreadline-dev > /dev/null
     - npm install > /dev/null
     - npm install --dev > /dev/null
