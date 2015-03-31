@@ -71,11 +71,13 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
  - Example State Machines are located in the /examples directory.
  - To run the jfsm utility locally, use `node lib/jfsm.js`
  - To install the jfsm utility globally, use `npm install -g ./`, then call `jfsm` to execute
- - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the outputs folder.
+ - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the ./outputs folder.
+ - To generate and compile the example state machines in c#, use `make language-csharp`. Outputs will be placed in the ./outputs folder.
  - For example commands, check out the makefile.
 
 ##Usage
-`jfsm --file [statemachine.json] --output [output directory]`
+`jfsm --file [statemachine.json] --lang [language] --output [output directory]`
+nb. file and language (lang) arguments are required. Output folder defaults to './outputs'.
 
 ##Semantics
 
@@ -104,7 +106,7 @@ An example of these methods can be viewed in outputs/UMLStateMachine.h after run
  - ~~switch to passing data object rather than state machine object~~
  - implement internal event outputs / triggers for transitions
  - javascript state machine shim
- - add tests to Travis-ci.org
+ - ~~add tests to Travis-ci.org~~
  - add to npm to allow simple installation of the utilities
  - improve documentation / help
  - refactor monolithic (awful) validation module into separate components
