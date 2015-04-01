@@ -58,11 +58,11 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
 
 ##Current Generators
 
-| Language      | Status        		| Tests  |
+| Language      | Status        		      | Tests  |
 | ------------- |-----------------------|--------|
-| c     		| Supported             | TODO   |
-| c#	        | Needs Updating        | TODO   |
-| javascript 	| Unsupported           | TODO   |
+| c     		      | Supported             | TODO   |
+| c#	           | Needs Updating        | TODO   |
+| javascript 	  | Unsupported           | TODO   |
 
 ##Getting Started
 
@@ -71,8 +71,8 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
  - Example State Machines are located in the /examples directory.
  - To run the jfsm utility locally, use `node lib/jfsm.js`
  - To install the jfsm utility globally, use `npm install -g ./`, then call `jfsm` to execute
- - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the ./outputs folder.
- - To generate and compile the example state machines in c#, use `make language-csharp`. Outputs will be placed in the ./outputs folder.
+ - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the ./outputs folder. Note that this requires gcc and libreadline (from build-essential and libreadline-dev packages).
+ - To generate and compile the example state machines in c#, use `make language-csharp`. Outputs will be placed in the ./outputs folder. Note that this requires the mcs and mono executables (from mono-devel and mono-mcs packages on linux).
  - For example commands, check out the makefile.
 
 ##Usage
