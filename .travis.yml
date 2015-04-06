@@ -15,7 +15,7 @@ install:
 
 script:
     - make test
-    - make install
+    - make test-install
     - make test-compile
 
 

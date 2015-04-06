@@ -1,7 +1,7 @@
 {
-	"name": "json-state-machines",
-	"version": "0.1.0",
-	"description": "Utilities for the representation, validation, and generation of state machines using a JSON intermediate form",
+	"name": "jfsm",
+	"version": "0.1.1",
+	"description": "Utilities for the representation, validation, and generation of state machines using a JSON intermediate representation",
 	"files": [
 		"README.md",
 		"examples",
@@ -16,7 +16,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://bitbucket.org/electronpowered/json-state-machines.git"
+		"url": "https://github.com/ryankurte/jfsm.git"
 	},
 	"dependencies": {
 		"minimist": "latest",

@@ -25,6 +25,9 @@ language-csharp:
 
 test-compile: language-c language-csharp
 
+test-install: install
+	which jfsm
+
 setup:
 	npm install -g
 
