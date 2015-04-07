@@ -1,25 +1,25 @@
 language: node_js
-
 node_js:
-    - node
-
+- node
 before_install:
-    - sudo apt-get update
-
+- sudo apt-get update
 install:
-    - sudo apt-get install build-essential
-    - sudo apt-get install mono-devel mono-mcs
-    - sudo apt-get install libreadline-dev
-    - npm install
-    - npm install --dev
-
+- sudo apt-get install build-essential
+- sudo apt-get install mono-devel mono-mcs
+- sudo apt-get install libreadline-dev
+- npm install
+- npm install --dev
 script:
-    - make test
-    - make test-install
-    - make test-compile
-
-
+- make test
+- make test-install
+- make test-compile
 notifications:
-    email: false
-
-
+  email: false
+deploy:
+  provider: npm
+  email: ryankurte@gmail.com
+  api_key:
+    secure: bTyontpoqewDSwgwwVlox/hBFYULSVRs18L0RPqQISlZpiovSZS1syZniCEBokSGEt7vbOqofOHVn/lwo611/SacfoHTaCeFuu+KssptBU7hzuy8W8Y+3ra9Mx7tLv0A3SvuuwXamB7G1Qdx7J0XwTzVcA9rmGBjjSla2I4bQ44=
+  on:
+    tags: true
+    repo: ryankurte/jfsm
