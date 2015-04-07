@@ -110,6 +110,7 @@ An example of these methods can be viewed in outputs/UMLStateMachine.h after run
  - add to npm to allow simple installation of the utilities
  - improve documentation / help
  - refactor monolithic (awful) validation module into separate components
+ - update generator to allow default or external templates
 
 ## Layout
 
