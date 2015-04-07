@@ -1,4 +1,4 @@
-#JSON Finite State Machine (JFMS) Representation, Validation and Generation
+#  JSON Finite State Machine (JFMS) Representation, Validation and Generation
 
 
 This project defines semantics for representation of single level Finite State Machines (FSMs) using JavaScript Object Notation (JSON), as an intermediate language for graphical generation, analysis of FSM execution, and generation of state machines in other languages.
@@ -26,45 +26,45 @@ This was also to provide functionality for wiring of state machines for elegant 
 
 It seems better to start by trying to solve a small problem well and moving from there [[1](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall.27s_law)]
 
-##Project State
+## Project State
 
 [![Build Status](https://travis-ci.org/ryankurte/jfsm.svg)](https://travis-ci.org/ryankurte/jfsm)
 
-###Specification
+### Specification
 Only by example (and in this README), see ./examples for example JSON files.
 
 This will be developed as we attempt to actually use the generator and discover issues / annoyances with the spec.
 
-###Validation
+### Validation
 See lib/fsm-validator.js
 
 Fairly complete. Validates Mealy, Moore and Extended state machines.
 
 Needs cleanup for simplification.
 
-###Generation
+### Generation
 See lib/fsm-generator.js
 
 Fairly complete. Generator functionality mostly implemented, generator templates need some work.
 
 Generator uses handlebars style templates with a JSON language specification file, see ./lib/generators/c for an up to date example.
 
-###Visualization
+### Visualization
 See app/
 
 Barely started. Visualization app could be build using node-webkit with joint.js rendering.
 
 examples/UMLStateMachine.json currently contains some keys for rendering, however this (IMO) makes the state machine less clear, so alternate methods are to be investigated.
 
-##Current Generators
+## Current Generators
 
-| Language      | Status        		      | Tests  |
+| Language      | Status                | Tests  |
 | ------------- |-----------------------|--------|
-| c     		      | Supported             | TODO   |
-| c#	           | Needs Updating        | TODO   |
-| javascript 	  | Unsupported           | TODO   |
+| c             | Supported             | TODO   |
+| c#            | Needs Updating        | TODO   |
+| javascript    | Unsupported           | TODO   |
 
-##Getting Started
+## Getting Started
 
  - Installation requires node.js and npm.
  - Install dependencies with `npm install`.
@@ -72,14 +72,14 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
  - To run the jfsm utility locally, use `node lib/jfsm.js`
  - To install the jfsm utility globally, use `npm install -g ./`, then call `jfsm` to execute
  - To generate and compile the example state machines in c, use `make language-c`. Outputs will be placed in the ./outputs folder. Note that this requires gcc and libreadline (from build-essential and libreadline-dev packages).
- - To generate and compile the example state machines in c#, use `make language-csharp`. Outputs will be placed in the ./outputs folder. Note that this requires the mcs and mono executables (from mono-devel and mono-mcs packages on linux).
+ - To generate and compile the example state machines in c# , use `make language-csharp`. Outputs will be placed in the ./outputs folder. Note that this requires the mcs and mono executables (from mono-devel and mono-mcs packages on linux).
  - For example commands, check out the makefile.
 
-##Usage
+## Usage
 `jfsm --file [statemachine.json] --lang [language] --output [output directory]`
 nb. file and language (lang) arguments are required. Output folder defaults to './outputs'.
 
-##Semantics
+## Semantics
 
 State machines should be defined as demonstrated in the example files
 The onSomething entries (ie. "onEntry":true) inform the state machine generator that a user function should be called in this case. In C this generates an unimplemented function definition in the state machine header for the user to implement, in higher level languages this generates abstract methods that are to be implemented by the user.
@@ -94,7 +94,7 @@ An example of these methods can be viewed in outputs/UMLStateMachine.h after run
  - guards - guard conditions enable, disable, or choose between transitions based on boolean operations. Note that operations may only refer to data defined in the state machine.
  - comments - comments are allowed on all objects and should be translated through into generated source code.
 
-##Tasks
+## Tasks
 
  - add comment support to all objects
  - validate keys for all objects (not just correctness)
@@ -111,25 +111,25 @@ An example of these methods can be viewed in outputs/UMLStateMachine.h after run
  - improve documentation / help
  - refactor monolithic (awful) validation module into separate components
 
-##Layout
+## Layout
 
  - ./lib/ contains javascript source files
  - ./lib/generators contains language generator files
  - ./test contains test files
  - ./examples contains example JSON state machines
 
-##References
+## References
 
  - http://en.wikipedia.org/wiki/UML_state_machine
  - http://www.omg.org/spec/
  - http://www.uml-diagrams.org/state-machine-diagrams.html
 
-##Alternatives
+## Alternatives
  - http://www.w3.org/TR/scxml/
  - https://www.lrde.epita.fr/~lesaint/lesaint-fsmxml.pdf
  - https://code.google.com/p/scxmlcc/
 
-##Discussions
+## Discussions
  - Should these discussions be issues? Why am I talking to myself?
  - Should transitions be triggerable internally or only due to external stimulus?
    - Current approach requires external event and an optional guard condition to transition
