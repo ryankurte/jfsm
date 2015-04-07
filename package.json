@@ -1,6 +1,6 @@
 {
 	"name": "jfsm",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Utilities for the representation, validation, and generation of state machines using a JSON intermediate representation",
 	"files": [
 		"README.md",
