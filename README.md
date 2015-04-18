@@ -66,6 +66,11 @@ examples/UMLStateMachine.json currently contains some keys for rendering, howeve
 
 ## Getting Started
 
+### Simple Install
+`npm install -g jfsm`
+
+## Development Install
+
  - Installation requires node.js and npm.
  - Install dependencies with `npm install`.
  - Example State Machines are located in the /examples directory.
